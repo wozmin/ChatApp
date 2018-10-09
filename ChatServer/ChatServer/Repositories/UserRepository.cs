@@ -1,5 +1,6 @@
 ﻿using ChatServer.EF;
 using ChatServer.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,13 @@ namespace ChatServer.Repositories
 {
     public class UserRepository:RepositoryBase<ApplicationUser>,IUserRepository
     {
+        private readonly UserManager<ApplicationUser> _userManager;
         private ApplicationContext _db;
 
-        public UserRepository(ApplicationContext db):base(db)
+        public UserRepository(ApplicationContext db,UserManager<ApplicationUser> userManager):base(db)
         {
             _db = db;
+            _userManager = userManager;
         }
 
         public async Task<IEnumerable<ApplicationUser>> GetActiveUsers()
@@ -27,6 +30,14 @@ namespace ChatServer.Repositories
             return await _db.AppUsers.ToListAsync();
         }
 
+        public async Task<ApplicationUser> GetUserByName(string userName)
+        {
+            return await _userManager.FindByNameAsync(userName);
+        }
 
+        public bool IsUserConnected(string connectionId)
+        {
+            return _db.AppUsers.Any(u => u.ConnectionId == connectionId);
+        }
     }
 }

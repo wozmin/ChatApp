@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ChatServer.EF;
+using ChatServer.Extentions;
+using ChatServer.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +27,21 @@ namespace ChatServer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder.WithOrigins("http://127.0.0.1:5500")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
+                });
+            });
+            services.ConfigureSqlServer(Configuration);
+            services.ConfigureIdentity();
+            services.ConfigureJwtTokens(Configuration);
+            services.ConfigureServices();
+            services.AddSignalR();
             services.AddMvc();
         }
 
@@ -36,7 +52,10 @@ namespace ChatServer
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseCors("AllowAll");
+            app.UseSignalR(routes => {
+                routes.MapHub<ChatHub>("/chat");
+            });
             app.UseMvc();
         }
     }

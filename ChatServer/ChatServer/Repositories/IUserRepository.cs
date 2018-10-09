@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace ChatServer.Repositories
 {
-    interface IUserRepository:IRepositoryBase<ApplicationUser>
+    public interface IUserRepository:IRepositoryBase<ApplicationUser>
     {
         Task<IEnumerable<ApplicationUser>> GetAllUsers();
         Task<IEnumerable<ApplicationUser>> GetActiveUsers();
+        Task<ApplicationUser> GetUserByName(string userName);
+        bool IsUserConnected(string connectionId);
     }
 }

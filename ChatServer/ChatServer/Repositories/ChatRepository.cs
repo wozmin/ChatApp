@@ -36,5 +36,20 @@ namespace ChatServer.Repositories
             }
             chat.Messages.Add(chatMessage);
         }
+
+        public bool IsUserInChat(string userName,int chatId)
+        {
+            var chat = _db.Chats.FirstOrDefault(c => c.Id == chatId);
+            if (chat == null)
+            {
+                return false;
+            }
+            var user = _db.AppUsers.FirstOrDefault(u => u.UserName == userName);
+            if(user == null)
+            {
+                return false;
+            }
+            return chat.UserChats.Any(u=>u.ApplicationUserId == user.Id);
+        }
     }
 }

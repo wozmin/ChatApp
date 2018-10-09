@@ -1,12 +1,13 @@
-﻿using System;
+﻿using ChatServer.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace ChatServer.Services
 {
-    interface IAccountService
+    public interface IAccountService
     {
-
+        string GenerateJwtToken(string email, ApplicationUser user);
     }
 }

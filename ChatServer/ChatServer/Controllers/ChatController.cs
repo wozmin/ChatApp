@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ChatServer.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Chat")]
+    [Route("api/chat")]
     public class ChatController : Controller
     {
     }

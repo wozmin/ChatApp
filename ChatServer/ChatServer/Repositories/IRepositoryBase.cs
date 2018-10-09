@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ChatServer.Repositories
 {
-    interface IRepositoryBase<T>
+    public interface IRepositoryBase<T>
     {
         Task<IEnumerable<T>> GetAll();
         Task<T> GetById(int id);

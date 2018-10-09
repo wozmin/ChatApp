@@ -8,12 +8,13 @@ namespace ChatServer.Models
 {
     public class ApplicationUser:IdentityUser
     {
-        public List<Chat> Chats { get; set; }
+        public List<UserChat> UserChats { get; set; }
         public UserProfile UserProfile { get; set; }
         public bool Online { get; set; }
+        public string ConnectionId { get; set; }
         public ApplicationUser()
         {
-            Chats = new List<Chat>();
+            UserChats = new List<UserChat>();
         }
     }
 }

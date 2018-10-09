@@ -11,11 +11,11 @@ namespace ChatServer.Models
         public string Name { get; set; }
         public DateTime CreationDate { get; set; }
         public ApplicationUser Creator { get; set; }
-        public List<ApplicationUser> Members { get; set; }
+        public List<UserChat> UserChats { get; set; }
         public List<ChatMessage> Messages { get; set; }
         public Chat()
         {
-            Members = new List<ApplicationUser>();
+            UserChats = new List<UserChat>();
             Messages = new List<ChatMessage>();
         }
     }
