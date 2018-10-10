@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using ChatServer.EF;
 using ChatServer.Extentions;
 using ChatServer.Hubs;
@@ -31,12 +32,13 @@ namespace ChatServer
             {
                 options.AddPolicy("AllowAll", builder =>
                 {
-                    builder.WithOrigins("http://127.0.0.1:5500")
+                    builder.WithOrigins("http://localhost:4200")
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials();
                 });
             });
+            services.AddAutoMapper();
             services.ConfigureSqlServer(Configuration);
             services.ConfigureIdentity();
             services.ConfigureJwtTokens(Configuration);
@@ -53,6 +55,7 @@ namespace ChatServer
                 app.UseDeveloperExceptionPage();
             }
             app.UseCors("AllowAll");
+            app.UseAuthentication();
             app.UseSignalR(routes => {
                 routes.MapHub<ChatHub>("/chat");
             });

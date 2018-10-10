@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -42,25 +43,40 @@ namespace ChatServer.Extentions
                     options.RequireHttpsMetadata = false;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
+                        RequireExpirationTime = true,
+                        RequireSignedTokens = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
                         ValidIssuer = configuration["Jwt:Issuer"],
                         ValidAudience = configuration["Jwt:Issuer"],
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["Jwt:Key"])),
-                        ClockSkew = TimeSpan.Zero
                     };
                     options.Events = new JwtBearerEvents
                     {
+                        
                         OnMessageReceived = context =>
                         {
-                            var accessToken = context.Request.Query["access_token"];
-
-                            // If the request is for our hub...
-                            var path = context.HttpContext.Request.Path;
-                            if (!string.IsNullOrEmpty(accessToken) &&
-                                (path.StartsWithSegments("/chat")))
+                            if (context.Request.Path.Value.StartsWith("/signalr") &&
+                            context.Token == null &&
+                            (context.Request.Headers.TryGetValue("Authorization", out StringValues token) ||
+                            context.Request.Query.TryGetValue("access_token", out StringValues token2)))
                             {
-                                // Read the token out of the query string
-                                context.Token = accessToken;
+                                // pull token from header or querystring; websockets don't support headers so fallback to query is required
+                                var tokenValue = token.FirstOrDefault() ?? token2.FirstOrDefault();
+                                const string prefix = "Bearer ";
+                                // remove prefix of header value
+                                if (tokenValue?.StartsWith(prefix) ?? false)
+                                {
+                                    context.Token = tokenValue.Substring(prefix.Length);
+                                }
+                                else
+                                {
+                                    context.Token = tokenValue;
+                                }
                             }
+
                             return Task.CompletedTask;
                         }
                     };

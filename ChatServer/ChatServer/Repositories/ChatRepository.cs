@@ -17,9 +17,14 @@ namespace ChatServer.Repositories
             _db = db;
         }
 
+        public override async Task<Chat> GetById(int id)
+        {
+            return await _db.Chats.Include(c => c.UserChats).Include(c=>c.Messages).FirstOrDefaultAsync(c=>c.Id == id);
+        }
+
         public async Task<IEnumerable<Chat>> GetChatList()
         {
-            return await _db.Chats.ToListAsync();
+            return await _db.Chats.Include(c=>c.Creator).ToListAsync();
         }
 
         public async Task<IEnumerable<ChatMessage>> GetChatMessages(int chatId)
@@ -50,6 +55,11 @@ namespace ChatServer.Repositories
                 return false;
             }
             return chat.UserChats.Any(u=>u.ApplicationUserId == user.Id);
+        }
+
+        public async Task<IEnumerable<ApplicationUser>> GetChatUsers(int chatId)
+        {
+           return await _db.UserChats.Where(uc => uc.ChatId == chatId).Select(uc => uc.ApplicationUser).ToListAsync();
         }
     }
 }

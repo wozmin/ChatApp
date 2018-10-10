@@ -12,5 +12,6 @@ namespace ChatServer.Repositories
         Task<IEnumerable<Chat>> GetChatList();
         void SaveMessages(int chatId, ChatMessage chatMessage);
         bool IsUserInChat(string userName, int chatId);
+        Task<IEnumerable<ApplicationUser>> GetChatUsers(int chatId);
     }
 }
