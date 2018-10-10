@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ChatServer.Controllers
 {
+    [Authorize]
     [Produces("application/json")]
     [Route("api/chat")]
     public class ChatController : Controller

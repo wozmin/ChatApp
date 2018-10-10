@@ -24,7 +24,7 @@ namespace ChatServer.Repositories
 
         public async Task<IEnumerable<Chat>> GetChatList()
         {
-            return await _db.Chats.Include(c=>c.Creator).ToListAsync();
+            return await _db.Chats.ToListAsync();
         }
 
         public async Task<IEnumerable<ChatMessage>> GetChatMessages(int chatId)

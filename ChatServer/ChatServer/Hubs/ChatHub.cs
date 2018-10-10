@@ -24,26 +24,13 @@ namespace ChatServer.Hubs
 
         public override async Task OnConnectedAsync()
         {
-            var userName = Context.User.Identity.Name;
-            var user = await _unitOfWork.Users.GetUserByName(userName);
-            if (user != null)
-            {
-                user.ConnectionId = Context.ConnectionId;
-                user.Online = true;
-                await _unitOfWork.SaveChangesAsync();
-            }
+            await this.ChangeUserStatus(true);
             await base.OnConnectedAsync();
         }
 
         public async override Task OnDisconnectedAsync(Exception exception)
         {
-            var userName = Context.User.Identity.Name;
-            var user = await _unitOfWork.Users.GetUserByName(userName);
-            if (user != null)
-            {
-                user.Online = false;
-                await _unitOfWork.SaveChangesAsync();
-            }
+            await this.ChangeUserStatus(false);
             await base.OnDisconnectedAsync(exception);
         }
 
@@ -68,6 +55,21 @@ namespace ChatServer.Hubs
             await Clients.Group(chat.Name).SendAsync("SendMessage",chatMessage);
             chat.Messages.Add(new ChatMessage { Chat = chat, Message = chatMessage.Message, User = user.UserName, Date = DateTime.Now });
             await _unitOfWork.SaveChangesAsync();
+        }
+
+        private async Task ChangeUserStatus(bool online)
+        {
+            var userName = Context.User.Identity.Name;
+            var user = await _unitOfWork.Users.GetUserByName(userName);
+            if (user != null)
+            {
+                if (online) {
+                    user.ConnectionId = Context.ConnectionId;
+                }
+                user.Online = online;
+                await _unitOfWork.SaveChangesAsync();
+            }
+
         }
     }
 }
