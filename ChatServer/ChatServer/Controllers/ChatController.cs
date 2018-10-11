@@ -27,13 +27,13 @@ namespace ChatServer.Controllers
         [HttpGet]
         public async  Task<IActionResult> GetAllChats()
         {
-            return Ok( _mapper.Map<IEnumerable<ChatViewModel>>(await _unitOfWork.Chats.GetAll()));
+            return Ok( _mapper.Map<IEnumerable<ChatViewModel>>(await _unitOfWork.Chats.GetAllAsync()));
         }
 
         [HttpGet("{id}/message")]
         public async Task<IActionResult> GetChatMessages(int id)
         {
-            var chat = await _unitOfWork.Chats.GetById(id);
+            var chat = await _unitOfWork.Chats.GetByIdAsync(id);
             if(chat == null)
             {
                 return NotFound("Chat was not found");
@@ -44,12 +44,12 @@ namespace ChatServer.Controllers
         [HttpGet("{id}/member")]
         public async Task<IActionResult> GetChatMembers(int id)
         {
-            var chat = await _unitOfWork.Chats.GetById(id);
+            var chat = await _unitOfWork.Chats.GetByIdAsync(id);
             if(chat == null)
             {
                 return BadRequest("Chat not found");
             }
-            return Ok(_mapper.Map<IEnumerable<UserViewModel>>(await _unitOfWork.Chats.GetChatUsers(id)));
+            return Ok(_mapper.Map<IEnumerable<UserViewModel>>(await _unitOfWork.Chats.GetChatUsersAsync(id)));
         }
     }
 }

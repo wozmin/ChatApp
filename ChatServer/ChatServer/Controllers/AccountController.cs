@@ -21,7 +21,7 @@ namespace ChatServer.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
         private readonly IAccountService _accountService;
-
+        
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
@@ -29,6 +29,7 @@ namespace ChatServer.Controllers
             IAccountService accountService
         )
         {
+            
             _userManager = userManager;
             _signInManager = signInManager;
             _configuration = configuration;

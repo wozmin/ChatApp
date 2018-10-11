@@ -16,12 +16,12 @@ namespace ChatServer.Repositories
             _db = db;
         }
 
-        public  async  virtual Task<IEnumerable<T>> GetAll()
+        public  async  virtual Task<IEnumerable<T>> GetAllAsync()
         {
             return await _db.Set<T>().ToListAsync();
         }
 
-        public async virtual  Task<T> GetById(int id)
+        public async virtual  Task<T> GetByIdAsync(int id)
         {
            return await _db.Set<T>().FindAsync(id);
         }

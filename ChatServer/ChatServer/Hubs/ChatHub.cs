@@ -24,13 +24,13 @@ namespace ChatServer.Hubs
 
         public override async Task OnConnectedAsync()
         {
-            await this.ChangeUserStatus(true);
+            await this.ChangeUserStatusAsync(true);
             await base.OnConnectedAsync();
         }
 
         public async override Task OnDisconnectedAsync(Exception exception)
         {
-            await this.ChangeUserStatus(false);
+            await this.ChangeUserStatusAsync(false);
             await base.OnDisconnectedAsync(exception);
         }
 
@@ -42,8 +42,8 @@ namespace ChatServer.Hubs
 
         public  async Task SendMessage(ChatMessageViewModel chatMessage)
         {
-            var chat = await _unitOfWork.Chats.GetById(chatMessage.ChatId);
-            var user = await _unitOfWork.Users.GetUserByName(chatMessage.UserName);
+            var chat = await _unitOfWork.Chats.GetByIdAsync(chatMessage.ChatId);
+            var user = await _unitOfWork.Users.GetUserByNameAsync(chatMessage.UserName);
             if(chat== null || user == null)
             {
                 return;
@@ -53,20 +53,20 @@ namespace ChatServer.Hubs
             }
             await AddUserToChat(user, chat.Name);
             await Clients.Group(chat.Name).SendAsync("SendMessage",chatMessage);
-            chat.Messages.Add(new ChatMessage { Chat = chat, Message = chatMessage.Message, User = user.UserName, Date = DateTime.Now });
+            chat.Messages.Add(new ChatMessage { Chat = chat, Message = chatMessage.Message, UserName = user.UserName, Date = DateTime.Now });
             await _unitOfWork.SaveChangesAsync();
         }
 
-        private async Task ChangeUserStatus(bool online)
+        private async Task ChangeUserStatusAsync(bool online)
         {
             var userName = Context.User.Identity.Name;
-            var user = await _unitOfWork.Users.GetUserByName(userName);
+            var user = await _unitOfWork.Users.GetUserByNameAsync(userName);
             if (user != null)
             {
                 if (online) {
                     user.ConnectionId = Context.ConnectionId;
                 }
-                user.Online = online;
+                user.IsOnline = online;
                 await _unitOfWork.SaveChangesAsync();
             }
 

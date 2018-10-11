@@ -11,9 +11,10 @@ using System;
 namespace ChatServer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20181011103830_fixes")]
+    partial class fixes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -104,7 +105,7 @@ namespace ChatServer.Migrations
 
                     b.Property<string>("Message");
 
-                    b.Property<string>("UserName");
+                    b.Property<string>("User");
 
                     b.HasKey("Id");
 

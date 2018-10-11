@@ -20,17 +20,17 @@ namespace ChatServer.Repositories
             _userManager = userManager;
         }
 
-        public async Task<IEnumerable<ApplicationUser>> GetActiveUsers()
+        public async Task<IEnumerable<ApplicationUser>> GetActiveUsersAsync()
         {
-           return await _db.AppUsers.Where(u => u.Online).ToListAsync();
+           return await _db.AppUsers.Where(u => u.IsOnline).ToListAsync();
         }
 
-        public async Task<IEnumerable<ApplicationUser>> GetAllUsers()
+        public async Task<IEnumerable<ApplicationUser>> GetAllUsersAsync()
         {
             return await _db.AppUsers.ToListAsync();
         }
 
-        public async Task<ApplicationUser> GetUserByName(string userName)
+        public async Task<ApplicationUser> GetUserByNameAsync(string userName)
         {
             return await _userManager.FindByNameAsync(userName);
         }
