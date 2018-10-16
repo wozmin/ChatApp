@@ -9,6 +9,8 @@ namespace ChatServer.ViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public  DateTime CreationDate { get; set; }
+        public string LastMessageUserName { get; set; }
+        public  DateTime LastMessageDate { get; set; }
+        public string LastMessageText { get; set; }
     }
 }
