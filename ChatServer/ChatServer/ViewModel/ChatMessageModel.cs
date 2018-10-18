@@ -11,5 +11,6 @@ namespace ChatServer.ViewModel
         public string UserName { get; set; }
         public string MessageText { get; set; }
         public DateTime MessageDate { get; set; }
+        public string UserAvatarUrl { get; set; }
     }
 }

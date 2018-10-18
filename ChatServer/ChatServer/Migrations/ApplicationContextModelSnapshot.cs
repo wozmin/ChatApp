@@ -104,11 +104,13 @@ namespace ChatServer.Migrations
 
                     b.Property<string>("Message");
 
-                    b.Property<string>("UserName");
+                    b.Property<string>("UserId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ChatId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("ChatMessages");
                 });
@@ -271,6 +273,10 @@ namespace ChatServer.Migrations
                         .WithMany("Messages")
                         .HasForeignKey("ChatId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ChatServer.Models.ApplicationUser", "User")
+                        .WithMany("ChatMessages")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("ChatServer.Models.UserChat", b =>

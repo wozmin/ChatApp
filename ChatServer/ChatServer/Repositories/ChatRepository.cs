@@ -19,17 +19,23 @@ namespace ChatServer.Repositories
 
         public override async Task<Chat> GetByIdAsync(int id)
         {
-            return await _db.Chats.Include(c => c.UserChats).Include(c=>c.Messages).FirstOrDefaultAsync(c=>c.Id == id);
+            return await _db.Chats.Include(c => c.UserChats).Include(c=>c.Messages).ThenInclude(m=>m.User).ThenInclude(m=>m.UserProfile).FirstOrDefaultAsync(c=>c.Id == id);
         }
 
-        public async Task<IEnumerable<Chat>> GetChatListAsync()
+
+        public  async Task<Chat> GetByNameAsync(string name)
         {
-            return await _db.Chats.Include(c=>c.Messages).ToListAsync();
+            return await _db.Chats.Include(c => c.UserChats).Include(c => c.Messages).ThenInclude(m => m.User).ThenInclude(m => m.UserProfile).FirstOrDefaultAsync(c => c.Name == name);
+        }
+
+        public async override  Task<IEnumerable<Chat>> GetAllAsync()
+        {
+            return await _db.Chats.Include(c=>c.Messages).ThenInclude(m=>m.User).ToListAsync();
         }
 
         public async Task<IEnumerable<ChatMessage>> GetChatMessagesAsync(int chatId)
         {
-            return await _db.ChatMessages.Where(c => c.Chat.Id == chatId).ToListAsync();
+            return await _db.ChatMessages.Include(cm=>cm.User).ThenInclude(u=>u.UserProfile).Where(c => c.Chat.Id == chatId).ToListAsync();
         }
 
         public void SaveMessages(int chatId,ChatMessage chatMessage)

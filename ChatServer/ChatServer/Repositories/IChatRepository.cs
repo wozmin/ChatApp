@@ -9,7 +9,6 @@ namespace ChatServer.Repositories
     public interface IChatRepository:IRepositoryBase<Chat>
     {
         Task<IEnumerable<ChatMessage>> GetChatMessagesAsync(int chatId);
-        Task<IEnumerable<Chat>> GetChatListAsync();
         void SaveMessages(int chatId, ChatMessage chatMessage);
         bool IsUserInChat(string userName, int chatId);
         Task<IEnumerable<ApplicationUser>> GetChatUsersAsync(int chatId);

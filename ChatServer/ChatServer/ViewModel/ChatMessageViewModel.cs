@@ -7,8 +7,8 @@ namespace ChatServer.ViewModel
 {
     public class ChatMessageViewModel
     {
-        public string Message;
-        public string UserName;
+        public string Message { get; set; }
+        public string UserName { get; set; }
         public int ChatId { get; set; }
     }
 }

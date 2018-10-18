@@ -11,6 +11,8 @@ namespace ChatServer.Models
         public UserProfile UserProfile { get; set; }
         public bool IsOnline { get; set; }
         public string ConnectionId { get; set; }
+
         public virtual List<UserChat> UserChats { get; set; }
+        public virtual List<ChatMessage> ChatMessages { get; set; }
     }
 }

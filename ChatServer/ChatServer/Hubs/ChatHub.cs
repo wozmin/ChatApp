@@ -44,6 +44,7 @@ namespace ChatServer.Hubs
         {
             var chat = await _unitOfWork.Chats.GetByIdAsync(chatMessage.ChatId);
             var user = await _unitOfWork.Users.GetUserByNameAsync(chatMessage.UserName);
+            var currentUser = await _unitOfWork.Users.GetUserByNameAsync(Context.User.Identity.Name);
             if(chat== null || user == null)
             {
                 return;
@@ -51,9 +52,11 @@ namespace ChatServer.Hubs
             if (!_unitOfWork.Chats.IsUserInChat(user.UserName,chat.Id)) {
                 return;
             }
+            await AddUserToChat(currentUser, chat.Name);
             await AddUserToChat(user, chat.Name);
-            await Clients.Group(chat.Name).SendAsync("SendMessage",chatMessage);
-            chat.Messages.Add(new ChatMessage { Chat = chat, Message = chatMessage.Message, UserName = user.UserName, Date = DateTime.Now });
+            var message = new ChatMessage { Chat = chat, Message = chatMessage.Message, User = user, Date = DateTime.Now };
+            await Clients.Group(chat.Name).SendAsync("SendMessage",new ChatMessageModel { MessageText = chatMessage.Message,MessageDate = DateTime.Now,UserAvatarUrl = user.UserProfile.AvatarUrl,UserName = chatMessage.UserName});
+            chat.Messages.Add(message);
             await _unitOfWork.SaveChangesAsync();
         }
 
