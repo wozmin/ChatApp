@@ -1,0 +1,19 @@
+<div class="chat-header">
+    <div class="navigation">
+        <div class="burger" (click)="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <nav>
+            <ul class="menu animated"  [ngClass]="isMenuVisible?'show-menu slideInDown':''">
+                <li (click)="openUserProfileModalHandler()"> <fa-icon [icon]="['fas', 'user']"></fa-icon>  Profile</li>
+                <li (click)="openUsersModalHandler()"><fa-icon [icon]="['fas','address-book']"></fa-icon>Users</li>
+                <li (click)="createChatHandler()"><fa-icon [icon]="['fas','users']"></fa-icon>New chat</li>
+            </ul>
+        </nav>    
+    </div>
+    <div class="selected-chat" (click)="openChatDetailsHandler()">
+        {{chatName}}
+    </div>
+</div>

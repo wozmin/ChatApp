@@ -1,0 +1,102 @@
+.modal-header{
+    flex-direction: column;
+    background-color: #5682A3;
+    color:#fff;
+    padding-left: 30px;
+    padding-right:30px;
+}
+
+.modal-header>div{
+    display: flex;
+    width: 100%;
+}
+
+.modal-header div:first-child{
+    justify-content: space-between;
+}
+
+.modal-title{
+    font-size: 18px!important;
+}
+
+.close-btn {
+    outline: none;
+    color:#DDE8F1;
+    font-size: 18px;
+    background-color: #5682A3;
+    border:none;
+}
+
+.close-btn:hover{
+    cursor: pointer;
+}
+
+.user-avatar{
+    margin-right: 20px;
+}
+
+.user-avatar img{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+.user-profile{
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.user-name{
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.last-visit,.online{
+    color:#C1D6E6;
+}
+
+.upload-avatar-btn{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #fff;
+    border:1px solid #EAEAEA;
+    position: relative;
+    top:-50px;
+    right:20px;
+    float:right;
+}
+
+.upload-avatar-btn input{
+    display: block;
+    opacity: 0.2;
+    position: absolute;
+    width: 26px;
+    height: 22px;
+    top:17px;
+    left:16px; 
+    opacity:0;
+    z-index: 999;
+}
+
+.upload-avatar-btn fa-icon{
+    display: block;
+    color:gray;
+    font-size: 25px;
+    position: relative;
+    top:10px;
+    left:18px; 
+    border:none;
+    background-color: transparent;
+}
+
+.upload-avatar-btn:hover{
+    cursor: pointer;
+}
+
+.upload-avatar-btn:hover fa-icon{
+    color:#5682A3;
+    cursor: pointer;
+}
+

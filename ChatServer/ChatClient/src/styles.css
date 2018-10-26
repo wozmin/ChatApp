@@ -1,0 +1,26 @@
+/* You can add global styles to this file, and also import other style files */
+  @import "https://fonts.googleapis.com/css?family=Quicksand";
+
+  *{
+    margin: 0;
+    padding: 0;
+  }
+
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+
+
+  body {
+    font-family: "Quicksand", sans-serif;
+    font-weight: 500;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    background-color: #E7EBF0 !important;
+  }
+

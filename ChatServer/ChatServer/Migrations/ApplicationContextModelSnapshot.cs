@@ -39,6 +39,10 @@ namespace ChatServer.Migrations
 
                     b.Property<bool>("IsOnline");
 
+                    b.Property<DateTime>("LastVisit")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("getdate()");
+
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");

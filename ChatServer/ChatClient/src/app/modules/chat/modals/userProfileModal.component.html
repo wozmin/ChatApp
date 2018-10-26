@@ -1,0 +1,33 @@
+<div *ngIf="userProfile">
+    <div class="modal-header">
+        <div>
+            <h4 class="modal-title">Contact info</h4>
+            <button type="button" class="close-btn" (click)="activeModal.dismiss()">
+                Close 
+            </button>
+        </div>
+        <div class="user-profile">
+            <div class="user-avatar">
+                <img src="{{userProfile.avatarUrl}}" alt="userAvatar">
+            </div>
+            <div>
+                <div class="user-name">
+                    {{userProfile.userName}}
+                </div>
+                <div class="last-visit" *ngIf="!userProfile.isOnline">
+                    last seen {{userProfile.lastVisit|date:"MMM d, y"}} at {{userProfile.lastVisit|date:"hh:mm a"}}
+                </div>
+                <div class="online" *ngIf="userProfile.isOnline">
+                    online
+                </div> 
+            </div>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="upload-avatar-btn">
+            <fa-icon [icon]="['fas','camera']" class="upload-avatar-btn">
+            </fa-icon>
+            <input type="file" multiple="false" accept="image/png image/gif image/jpeg" (change)="uploadAvatarHandler($event.target.files[0])">
+        </div>
+    </div>
+</div>

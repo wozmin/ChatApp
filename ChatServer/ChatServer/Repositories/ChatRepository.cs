@@ -19,18 +19,43 @@ namespace ChatServer.Repositories
 
         public override async Task<Chat> GetByIdAsync(int id)
         {
-            return await _db.Chats.Include(c => c.UserChats).Include(c=>c.Messages).ThenInclude(m=>m.User).ThenInclude(m=>m.UserProfile).FirstOrDefaultAsync(c=>c.Id == id);
+            return await _db.Chats
+                .Include(c => c.UserChats)
+                .Include(c=>c.Messages)
+                .ThenInclude(m=>m.User)
+                .ThenInclude(m=>m.UserProfile)
+                .FirstOrDefaultAsync(c=>c.Id == id);
         }
 
+        public async Task<IEnumerable<UserChat>> GetChatsByUser(string userId)
+        {
+            return await _db.UserChats
+                .Include(uc => uc.Chat)
+                .ThenInclude(c => c.Messages)
+                .ThenInclude(m => m.User)
+                .ThenInclude(u => u.UserProfile)
+                .Where(uc => uc.ApplicationUserId == userId)
+                .ToListAsync();
+                
+        }
 
         public  async Task<Chat> GetByNameAsync(string name)
         {
-            return await _db.Chats.Include(c => c.UserChats).Include(c => c.Messages).ThenInclude(m => m.User).ThenInclude(m => m.UserProfile).FirstOrDefaultAsync(c => c.Name == name);
+            return await _db.Chats
+                .Include(c => c.UserChats)
+                .Include(c => c.Messages)
+                .ThenInclude(m => m.User)
+                .ThenInclude(m => m.UserProfile)
+                .FirstOrDefaultAsync(c => c.Name == name);
         }
 
         public async override  Task<IEnumerable<Chat>> GetAllAsync()
         {
-            return await _db.Chats.Include(c=>c.Messages).ThenInclude(m=>m.User).ToListAsync();
+            return await _db.Chats
+                .Include(c=>c.Messages)
+                .ThenInclude(m=>m.User)
+                .ThenInclude(u=>u.UserProfile)
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<ChatMessage>> GetChatMessagesAsync(int chatId)
@@ -51,7 +76,7 @@ namespace ChatServer.Repositories
         public bool IsUserInChat(string userName,int chatId)
         {
             var chat = _db.Chats.FirstOrDefault(c => c.Id == chatId);
-            if (chat == null)
+            if (chat == null || chat.UserChats == null)
             {
                 return false;
             }
@@ -60,7 +85,7 @@ namespace ChatServer.Repositories
             {
                 return false;
             }
-            return chat.UserChats.Any(u=>u.ApplicationUserId == user.Id);
+            return chat.UserChats.Any(u=>u.ApplicationUserId == user.Id && u.ChatId == chatId);
         }
 
         public async Task<IEnumerable<ApplicationUser>> GetChatUsersAsync(int chatId)

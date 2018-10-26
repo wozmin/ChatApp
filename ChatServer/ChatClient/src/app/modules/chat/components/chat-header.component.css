@@ -1,0 +1,76 @@
+
+.chat-header{
+    height: 50px;
+    background-color: #5682A3;
+    position: relative;
+    z-index: 22;
+}
+
+.navigation{
+    height: 100%;
+    width: 30.9%;
+}
+
+.menu{
+    display: none;
+    border-bottom:3px solid #E7EBF0;
+    position: relative;
+    top:32px;
+    left:0;
+}
+
+.menu li{
+    display: block;
+    padding: 15px 20px;
+    background-color: #fff;
+    color:#5682A3;
+}
+
+.menu li:hover{
+    background-color: #F2F6FA;
+    cursor: pointer;
+}
+
+.burger:hover{
+    cursor: pointer;
+}
+
+.burger{
+    width: 20px;
+    height: 18px;
+    position: relative;
+    top:16px;
+    left:25px;
+}
+
+.burger div{
+    width: 20px;
+    height: 2px;
+    margin: 4px 0;
+    background-color: #fff;
+}
+
+
+.menu fa-icon{
+    margin-right: 25px;
+    font-size: 18px;
+}
+
+.show-menu{
+    display: block;
+}
+
+ .selected-chat{
+    position: absolute;
+    right:31%;
+    top:13px;
+    color:#fff;
+    font-weight: bold;
+    font-size: 18px;
+} 
+
+.selected-chat:hover{
+    cursor: pointer;
+}
+
+

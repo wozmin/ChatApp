@@ -1,0 +1,14 @@
+<div>
+    <div class="modal-header">
+        <h4 class="modal-title">New Chat</h4>
+        <button type="button" class="close-btn" (click)="activeModal.dismiss()">
+            Close 
+          </button>
+    </div>
+    <div class="modal-body">
+        <input type="text" placeholder="Your chat name" [(ngModel)]="newChatName">
+    </div>
+    <div class="modal-footer">
+        <button (click)="activeModal.close(newChatName)">Create</button>
+    </div>
+</div>

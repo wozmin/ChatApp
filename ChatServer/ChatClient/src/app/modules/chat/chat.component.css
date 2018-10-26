@@ -1,0 +1,29 @@
+.chat{
+   display: flex;
+   background-color: #fff;
+}
+
+.chat-list{
+    border-right: 2px solid #E9EBED;
+    width: 31%;
+}
+
+.chat-box{
+    width: 69%;
+}
+
+.show{
+    visibility: visible;
+}
+
+.hide{
+    visibility: hidden;
+}
+
+.opened{
+    background-color: #5682A3;
+}
+
+.user-list-modal .modal-content{
+    border:none;
+}

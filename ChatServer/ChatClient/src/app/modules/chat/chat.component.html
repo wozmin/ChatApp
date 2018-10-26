@@ -1,0 +1,25 @@
+<chat-header
+    [chat-name]="this.chatName"
+    (openUsersModal)="openUsersModal()"
+    (openUserProfileModal)="openUserProfileModal()"
+    (createChat)="openNewChatModal()"
+    (openChatDetails)="openChatDetailsModal()"
+></chat-header>
+<div class="chat">
+    <div class="chat-list">
+        <chat-dialog 
+        *ngFor="let chatDialog of chatDialogs"
+         [chat-info]="chatDialog"
+         (selectChat)="openChat($event)"
+         [ngClass]="isChatOpened?'opened':''"
+        ></chat-dialog>
+    </div>
+    <div class="chat-box" [ngClass]="isChatOpened?'show':'hide'">
+        <chat-history  
+        [messages]="chatMessages" 
+        [userName]="userName"
+        (openUserProfile)="openUserProfileModal($event)"
+        >Please Select the Chat</chat-history>
+        <chat-form (sendMessage)="sendMessage($event)"></chat-form>
+    </div>
+</div>

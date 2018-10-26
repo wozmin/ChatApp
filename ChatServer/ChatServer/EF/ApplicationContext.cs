@@ -22,8 +22,16 @@ namespace ChatServer.EF
         {
             builder.Entity<UserChat>().HasKey(t => new { t.ChatId, t.ApplicationUserId });
 
-            builder.Entity<UserChat>().HasOne(uc => uc.Chat).WithMany(c => c.UserChats).HasForeignKey(uc => uc.ChatId);
-            builder.Entity<UserChat>().HasOne(uc => uc.ApplicationUser).WithMany(c => c.UserChats).HasForeignKey(uc => uc.ApplicationUserId);
+            builder.Entity<UserChat>()
+                .HasOne(uc => uc.Chat)
+                .WithMany(c => c.UserChats)
+                .HasForeignKey(uc => uc.ChatId);
+            builder.Entity<UserChat>()
+                .HasOne(uc => uc.ApplicationUser)
+                .WithMany(c => c.UserChats)
+                .HasForeignKey(uc => uc.ApplicationUserId);
+
+            builder.Entity<ApplicationUser>().Property(u => u.LastVisit).HasDefaultValueSql("getdate()");
             base.OnModelCreating(builder);
         }
     }

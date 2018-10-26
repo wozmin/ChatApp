@@ -1,0 +1,49 @@
+.chat-img{
+    width: 50px;
+    height: 50px;
+    background-image: url(../../../assets/images/telegram_icon.png);
+    background-size: cover;
+}
+
+.chat-dialog{
+    display:flex;
+    margin-top: 15px;
+    padding:10px;
+}
+
+.chat-dialog:hover{
+    background-color: #F2F6FA;
+    cursor:pointer;
+}
+
+.chat-info{
+    flex:1 1 auto;
+    margin-left: 10px;
+}
+
+.chat-description{
+    display: flex;
+    justify-content: space-between;
+    padding: 3px;
+}
+
+.chat-description .name{
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.chat-description .creation-date{
+    font-size: 12px;
+    font-style: italic;
+    color:#B6B6B6;
+}
+
+.last-message{
+    padding-top: 10px;
+    font-size: 13px;
+    margin-left: 4px;
+}
+
+.last-message .user-name{
+    color:#517EA5;
+}

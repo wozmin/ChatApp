@@ -1,0 +1,49 @@
+.modal-header{
+    background-color: #5682A3;
+    color:#fff;
+    padding-left: 20px;
+    padding-right:20px;
+}
+
+.modal-title{
+    font-size: 18px!important;
+}
+
+
+.close-btn {
+    outline: none;
+    color:#DDE8F1;
+    font-size: 18px;
+    background-color: #5682A3;
+    border:none;
+}
+
+.close-btn:hover{
+    cursor: pointer;
+}
+
+.modal-body input{
+    display: inline-block;
+    width: 80%;
+    outline: none;
+    border:none;
+    margin-left: 10px;
+    font-style: italic;
+    color:#DDE8F1;
+}
+
+.modal-footer button{
+    color:#4680B3;
+    font-size: 16px;
+    background-color: #fff;
+    outline:none;
+    border:none;
+    margin: 0 auto;
+    font-weight: bold;
+    padding: 7px 20px;
+}
+
+.modal-footer button:hover{
+    background-color: #F2F6FA;
+    cursor:pointer;
+}

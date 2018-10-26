@@ -1,0 +1,18 @@
+<div class="chat-dialog">
+    <div class="chat-img">
+    </div>
+    <div class="chat-info">
+        <div class="chat-description">
+            <div class="name">
+                {{chatInfo.name}}
+            </div>
+            <div class="creation-date">
+                {{chatInfo.lastMessageDate | date:"hh:mm"}}
+            </div>
+        </div>
+        <div class="last-message">
+            <span class="user-name">{{chatInfo.lastMessageUserName}}:</span>
+            {{chatInfo.lastMessageText|sliceMessage}}
+        </div>
+    </div>
+</div>

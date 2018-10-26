@@ -1,0 +1,14 @@
+<div class="container">
+    <form novalidate #form="ngForm" (ngSubmit)="login(form)">
+        <h1>
+          Sign in
+        </h1>
+        <div class="form-content">
+          <input id="user-name" name="username" placeholder="user name" type="text" [(ngModel)]="username" />
+          <input id="password" name="password" placeholder="password" type="password" [(ngModel)]="password"/>
+          <br/>
+          <button class="button" type="submit">Submit</button>
+          <br />
+        </div>
+      </form>
+</div>

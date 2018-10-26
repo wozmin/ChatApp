@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using ChatServer.Models;
 using ChatServer.Repositories;
 using ChatServer.ViewModel;
 using Microsoft.AspNetCore.Authorization;
@@ -18,16 +19,16 @@ namespace ChatServer.Controllers
     {
         private IUnitOfWork _unitOfWork;
         private IMapper _mapper;
-        public ChatController(IUnitOfWork unitOfWork,IMapper mapper)
+        public ChatController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
-        [HttpGet]
-        public async  Task<IActionResult> GetAllChats()
+        [HttpGet("{id}")]
+        public async  Task<IActionResult> GetChats(string id)
         {
-            return Ok( _mapper.Map<IEnumerable<ChatViewModel>>(await _unitOfWork.Chats.GetAllAsync()));
+            return Ok(_mapper.Map<IEnumerable<ChatViewModel>>(await _unitOfWork.Chats.GetChatsByUser(id)));
         }
 
         [HttpGet("{id}/message")]
@@ -49,7 +50,42 @@ namespace ChatServer.Controllers
             {
                 return BadRequest("Chat not found");
             }
-            return Ok(_mapper.Map<IEnumerable<UserViewModel>>(await _unitOfWork.Chats.GetChatUsersAsync(id)));
+            return Ok(_mapper.Map<IEnumerable<ChatUserViewModel>>(await _unitOfWork.Chats.GetChatUsersAsync(id)));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateChat(string chatName)
+        {
+            var creator = await _unitOfWork.Users.GetUserByNameAsync(User.Identity.Name);
+            var admin = await _unitOfWork.Users.GetUserByNameAsync("Admin");
+            var currentUser = await _unitOfWork.Users.GetUserByNameAsync(User.Identity.Name);
+            var chat = new Chat()
+            {
+                Name = chatName,
+                Creator = creator,
+                CreationDate = DateTime.Now,
+            };
+            _unitOfWork.Chats.Create(chat);
+            chat.UserChats = new List<UserChat>
+            {
+                new UserChat
+                {
+                    ChatId = chat.Id,
+                    ApplicationUserId = currentUser.Id
+                }
+            };
+            chat.Messages = new List<ChatMessage>
+            {
+                new ChatMessage
+                {
+                    Message = "Chat was created ",
+                    Date = DateTime.Now,
+                    ChatId = chat.Id,
+                    UserId = admin.Id
+                }
+            };
+            await _unitOfWork.SaveChangesAsync();
+            return Ok(_mapper.Map<ChatViewModel>(chat));
         }
     }
 }

@@ -1,0 +1,48 @@
+<div *ngIf="members">
+    <div class="modal-header">
+        <div>
+            <h4 class="modal-title">Chat Details</h4>
+            <button type="button" class="close-btn"  (click)="activeModal.dismiss()">
+                Close
+            </button>
+        </div>
+        <div class="chat-info">
+          <div class="chat-img">
+          </div>
+          <div>
+              <div class="chat-name">
+                  {{chatName}}
+              </div>
+              <div class="members-count">
+                  {{members.length}} members
+              </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="new-member">
+            <fa-icon [icon]="['fas','user']"></fa-icon>
+            <button (click)="addMemberHandler()">Add member</button>
+        </div>
+        <div class="members">
+            <div>
+                <fa-icon [icon]="['fa','users']"></fa-icon>Members
+            </div>
+            <div *ngFor= "let user of members" class="user">
+                <div class="user-avatar">
+                    <img src="{{user.avatarUrl || 'https://us.123rf.com/450wm/triken/triken1608/triken160800028/61320729-male-avatar-profile-picture-default-user-avatar-guest-avatar-simply-human-head-vector-illustration-i.jpg?ver=6'}}" alt="userAvatar">
+                </div>
+                <div>
+                    <div class="user-name">
+                        {{user.userName}}
+                    </div>
+                    <div *ngIf="user.isOnline" class="online">
+                        online
+                    </div>
+                    <div *ngIf="!user.isOnline" class="last-visit">
+                        last visit {{user.lastVisit | date:"MMM d, y"}}
+                    </div>
+            </div>
+        </div>
+      </div>
+</div>

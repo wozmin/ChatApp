@@ -1,0 +1,125 @@
+.modal-header{
+    flex-direction: column;
+    background-color: #5682A3;
+    color:#fff;
+    padding-left: 30px;
+    padding-right:30px;
+}
+
+.modal-header>div{
+    display: flex;
+    width: 100%;
+}
+
+.modal-header div:first-child{
+    justify-content: space-between;
+}
+
+.modal-title{
+    font-size: 18px!important;
+}
+
+.close-btn {
+    outline: none;
+    color:#DDE8F1;
+    font-size: 18px;
+    background-color: #5682A3;
+    border:none;
+}
+
+.close-btn:hover{
+    cursor: pointer;
+}
+
+.chat-info{
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.chat-img{
+    width: 60px;
+    height: 60px;
+    background-image: url(../../../assets/images/telegram_icon.png);
+    background-size: cover;
+    margin-right: 20px;
+}
+
+.chat-name{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.members-count{
+    margin-top: 7px;
+    color:#B5B5B5;
+}
+
+.new-member{
+    margin-left: 60px;
+    margin-bottom: 10px;
+}
+
+.new-member fa-icon{
+    color:gray;
+    font-size: 18px;
+    margin-right: 40px;
+}
+
+.new-member button{
+    background-color: transparent;
+    border:none;
+    outline:none;
+}
+
+.new-member button:hover{
+    color:#5682A3;
+    cursor:pointer;
+}
+
+.members{
+    max-height: 400px;
+    margin-left: 1px;
+    overflow-y:hidden;
+}
+
+.members:hover{
+    overflow: overlay;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+.members fa-icon{
+    color:gray;
+    font-size: 18px;
+    margin-left:56px;
+    margin-right: 36px;
+}
+
+
+.user{
+    display: flex;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-left: 100px;
+    margin-right: 5px;
+}
+
+
+.user-avatar img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.user-name{
+    color:#000;
+    font-weight: bold;
+}
+
+.last-visit{
+    color:#B5B5B5;
+}
+
+.online{
+    color:#688FB1;
+}

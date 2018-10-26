@@ -10,7 +10,9 @@ namespace ChatServer.Repositories
     {
         Task<IEnumerable<ApplicationUser>> GetAllUsersAsync();
         Task<IEnumerable<ApplicationUser>> GetActiveUsersAsync();
+        Task<ApplicationUser> GetByIdAsync(string userId);
         Task<ApplicationUser> GetUserByNameAsync(string userName);
+        Task<UserProfile> GetUserProfile(string userId);
         bool IsUserConnected(string connectionId);
     }
 }

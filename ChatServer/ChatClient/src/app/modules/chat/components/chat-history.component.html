@@ -1,0 +1,20 @@
+<div class="chat-history" #scrollChat [scrollTop]="scrollChat.scrollHeight">
+    <div *ngFor="let message of messages;index as i" class="chat-message;trackBy:getKey">
+      <div class="message-info" [ngClass]="userName==message.userName?'text-right':''">
+          <div class="user-info">
+            <div class="avatar" (click)="openUserProfileHandler(message.userId)">
+                <img src="{{'https://us.123rf.com/450wm/triken/triken1608/triken160800028/61320729-male-avatar-profile-picture-default-user-avatar-guest-avatar-simply-human-head-vector-illustration-i.jpg?ver=6'}}">
+            </div>
+            <div class="name" (click)="openUserProfileHandler(message.userId)">
+                {{message.userName}}
+            </div>
+          </div>
+          <div class="message-date">
+              {{message.messageDate | date:"hh:mm:ss"}}
+          </div> 
+      </div>
+      <p class="message">
+          {{message.messageText}}
+      </p>
+    </div>
+</div>

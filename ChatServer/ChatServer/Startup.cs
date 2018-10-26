@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -8,6 +9,7 @@ using ChatServer.Extentions;
 using ChatServer.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,6 +40,11 @@ namespace ChatServer
                         .AllowCredentials();
                 });
             });
+            services.AddResponseCompression();
+            services.Configure<GzipCompressionProviderOptions>(options =>
+            {
+                options.Level = CompressionLevel.Optimal;
+            });
             services.AddAutoMapper();
             services.ConfigureSqlServer(Configuration);
             services.ConfigureIdentity();
@@ -55,6 +62,7 @@ namespace ChatServer
                 app.UseDeveloperExceptionPage();
             }
             app.UseCors("AllowAll");
+            app.UseResponseCompression();
             app.UseAuthentication();
             app.UseSignalR(routes => {
                 routes.MapHub<ChatHub>("/chat");

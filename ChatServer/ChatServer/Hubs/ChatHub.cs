@@ -1,4 +1,5 @@
-﻿using ChatServer.Models;
+﻿using AutoMapper;
+using ChatServer.Models;
 using ChatServer.Repositories;
 using ChatServer.ViewModel;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -15,10 +16,12 @@ namespace ChatServer.Hubs
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ChatHub:Hub
     {
+        private readonly IMapper _mapper; 
         private readonly IUnitOfWork _unitOfWork;
-        public ChatHub(IUnitOfWork unitOfWork)
+        public ChatHub(IUnitOfWork unitOfWork,IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
 
@@ -35,9 +38,15 @@ namespace ChatServer.Hubs
         }
 
 
-        public async Task AddUserToChat(ApplicationUser user,string chatName)
+        public async Task JoinChat(string userId,int chatId)
         {
-            await Groups.AddToGroupAsync(user.ConnectionId, chatName);
+            var user = await _unitOfWork.Users.GetByIdAsync(userId);
+            await Groups.AddToGroupAsync(user.ConnectionId, chatId.ToString());
+            if (!_unitOfWork.Chats.IsUserInChat(user.UserName, chatId))
+            {
+                var chat = await _unitOfWork.Chats.GetByIdAsync(chatId);
+                await Clients.Client(user.ConnectionId).SendAsync("JoinChat", _mapper.Map<ChatViewModel>(chat));
+            }
         }
 
         public  async Task SendMessage(ChatMessageViewModel chatMessage)
@@ -52,13 +61,16 @@ namespace ChatServer.Hubs
             if (!_unitOfWork.Chats.IsUserInChat(user.UserName,chat.Id)) {
                 return;
             }
-            await AddUserToChat(currentUser, chat.Name);
-            await AddUserToChat(user, chat.Name);
-            var message = new ChatMessage { Chat = chat, Message = chatMessage.Message, User = user, Date = DateTime.Now };
-            await Clients.Group(chat.Name).SendAsync("SendMessage",new ChatMessageModel { MessageText = chatMessage.Message,MessageDate = DateTime.Now,UserAvatarUrl = user.UserProfile.AvatarUrl,UserName = chatMessage.UserName});
-            chat.Messages.Add(message);
+            //await AddUserToChat(currentUser, chat.Name);
+            //await AddUserToChat(user, chat.Name);
+            var message = new ChatMessageModel { MessageText = chatMessage.Message, MessageDate = DateTime.Now, UserAvatarUrl = user.UserProfile?.AvatarUrl, UserName = chatMessage.UserName };
+            await Clients.Group(chat.Id.ToString()).SendAsync("SendMessage",message);
+            await Clients.Caller.SendAsync("SendMessage",message);
+            chat.Messages.Add(new ChatMessage { Chat = chat, Message = chatMessage.Message, User = user, Date = DateTime.Now });
             await _unitOfWork.SaveChangesAsync();
         }
+
+
 
         private async Task ChangeUserStatusAsync(bool online)
         {
@@ -68,6 +80,10 @@ namespace ChatServer.Hubs
             {
                 if (online) {
                     user.ConnectionId = Context.ConnectionId;
+                }
+                else
+                {
+                    user.LastVisit = DateTime.Now;
                 }
                 user.IsOnline = online;
                 await _unitOfWork.SaveChangesAsync();
