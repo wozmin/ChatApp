@@ -4,7 +4,6 @@ h1 {
   color: #384047;
   text-align: center;
   line-height: 1.5em;
-  margin-bottom: 1.2em;
   margin-top: 0.2em;
 }
 
@@ -44,6 +43,10 @@ form {
   box-shadow: 0 10px 40px -14px rgba(0, 0, 0, 0.25);
 }
 
+.control{
+  max-width: 400px;
+}
+
 form input {
   color: #384047;
   background-color: #e8eeef;
@@ -54,6 +57,7 @@ form input {
   margin-bottom: 1.2em;
   width: 100%;
 }
+
 form input:focus {
   outline: none;
 }
@@ -107,4 +111,11 @@ form input:focus {
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: space-between;
+}
+
+.error{
+  font-size: 18px;
+  color:#A30300;
+  text-align: center;
+  padding: 30px 0;
 }

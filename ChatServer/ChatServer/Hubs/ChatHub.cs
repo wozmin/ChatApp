@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ChatServer.Hubs
@@ -42,9 +40,11 @@ namespace ChatServer.Hubs
         {
             var user = await _unitOfWork.Users.GetByIdAsync(userId);
             await Groups.AddToGroupAsync(user.ConnectionId, chatId.ToString());
-            if (!_unitOfWork.Chats.IsUserInChat(user.UserName, chatId))
+            if (!_unitOfWork.Chats.IsUserInChat(userId, chatId))
             {
                 var chat = await _unitOfWork.Chats.GetByIdAsync(chatId);
+                _unitOfWork.Chats.AddToChat(chatId, userId);
+                await _unitOfWork.SaveChangesAsync();
                 await Clients.Client(user.ConnectionId).SendAsync("JoinChat", _mapper.Map<ChatViewModel>(chat));
             }
         }
@@ -54,19 +54,22 @@ namespace ChatServer.Hubs
             var chat = await _unitOfWork.Chats.GetByIdAsync(chatMessage.ChatId);
             var user = await _unitOfWork.Users.GetUserByNameAsync(chatMessage.UserName);
             var currentUser = await _unitOfWork.Users.GetUserByNameAsync(Context.User.Identity.Name);
-            if(chat== null || user == null)
-            {
-                return;
-            }
-            if (!_unitOfWork.Chats.IsUserInChat(user.UserName,chat.Id)) {
-                return;
-            }
             //await AddUserToChat(currentUser, chat.Name);
             //await AddUserToChat(user, chat.Name);
-            var message = new ChatMessageModel { MessageText = chatMessage.Message, MessageDate = DateTime.Now, UserAvatarUrl = user.UserProfile?.AvatarUrl, UserName = chatMessage.UserName };
+            var message = new ChatMessageModel {
+                MessageText = chatMessage.Message,
+                MessageDate = DateTime.Now,
+                UserAvatarUrl = user.UserProfile?.AvatarUrl,
+                UserName = chatMessage.UserName
+            };
             await Clients.Group(chat.Id.ToString()).SendAsync("SendMessage",message);
             await Clients.Caller.SendAsync("SendMessage",message);
-            chat.Messages.Add(new ChatMessage { Chat = chat, Message = chatMessage.Message, User = user, Date = DateTime.Now });
+            chat.Messages.Add(new ChatMessage {
+                Chat = chat,
+                Message = chatMessage.Message,
+                User = user,
+                Date = DateTime.Now
+            });
             await _unitOfWork.SaveChangesAsync();
         }
 

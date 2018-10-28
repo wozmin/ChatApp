@@ -8,7 +8,7 @@ namespace ChatServer.Repositories
 {
     public interface IUserRepository:IRepositoryBase<ApplicationUser>
     {
-        Task<IEnumerable<ApplicationUser>> GetAllUsersAsync();
+        Task<IEnumerable<ApplicationUser>> GetAllUsersAsync(int page,int pageSize);
         Task<IEnumerable<ApplicationUser>> GetActiveUsersAsync();
         Task<ApplicationUser> GetByIdAsync(string userId);
         Task<ApplicationUser> GetUserByNameAsync(string userName);

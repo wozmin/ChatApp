@@ -1,6 +1,6 @@
 .chat-form{
     display: flex;
-    height: 80px;
+    height: 100%;
     align-items: center;
     justify-content: center;
 }
@@ -30,4 +30,20 @@
     background-size: cover;
     margin-left: 10px;
     outline:none;
+}
+
+@media only screen and (max-width:600px){
+    .chat-form{
+        height: 100px;
+    }
+
+    .chat-form textarea{
+        width: 60%;
+        height: 50px;
+    }
+
+    .chat-form button{
+        width: 40px;
+        height: 40px;
+    }
 }

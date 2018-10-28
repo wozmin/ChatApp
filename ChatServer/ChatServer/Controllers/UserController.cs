@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers.Text;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -28,9 +29,10 @@ namespace ChatServer.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(int page=1)
         {
-            return Ok(_mapper.Map<IEnumerable<ChatUserViewModel>>(await _userRepository.GetAllUsersAsync()));
+            int pageSize = 6;
+            return Ok(_mapper.Map<IEnumerable<ChatUserViewModel>>(await _userRepository.GetAllUsersAsync(page,pageSize)));
         }
 
         [HttpGet("{id}/profile")]
@@ -45,17 +47,21 @@ namespace ChatServer.Controllers
         }
 
         [HttpPost("avatar")]
-        public async Task<IActionResult> UploadAvatar([FromForm(Name = "avatar")] IFormFile avatar)
+        public async Task<IActionResult> UploadAvatar(IFormFile avatar)
         {
             var uploads = Path.Combine(_environment.WebRootPath, "uploads");
-            if (avatar.Length > 0)
+            if (!ModelState.IsValid)
             {
-                
-                using (var fileStream = new FileStream(Path.Combine(uploads, User.Identity.Name+"-avatar"), FileMode.Create))
-                {
-                    await avatar.CopyToAsync(fileStream);
-                }
+                return BadRequest(ModelState.ValidationState);
             }
+            //if (avatar.Length > 0)
+            //{
+                
+            //    using (var fileStream = new FileStream(Path.Combine(uploads, User.Identity.Name+"-avatar"), FileMode.Create))
+            //    {
+            //        await avatar.CopyToAsync(fileStream);
+            //    }
+            //}
             return Ok();
         }
     }

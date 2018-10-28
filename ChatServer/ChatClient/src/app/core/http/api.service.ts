@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from "@angular/core";
 import { Observable, throwError } from "rxjs";
 import { ChatDialog } from 'src/app/shared/models/chatDialog.model';
@@ -23,12 +23,12 @@ export class APIService{
         return this.http.get(this.baseUrl+`/chat/${userId}`) as Observable<ChatDialog[]>;
     }
 
-    getChatMessages(chatId:number):Observable<ChatMessage[]>{
-        return this.http.get(this.baseUrl+`/chat/${chatId}/message`) as Observable<ChatMessage[]>;
+    getChatMessages(chatId:number,page:number):Observable<ChatMessage[]>{
+        return this.http.get(this.baseUrl+`/chat/${chatId}/message?page=${page}`) as Observable<ChatMessage[]>;
     }
 
-    getUsers():Observable<ChatUser[]>{
-        return this.http.get(this.baseUrl+'/user') as Observable<ChatUser[]>;
+    getUsers(page:number):Observable<ChatUser[]>{
+        return this.http.get(this.baseUrl+`/user?page=${page}`) as Observable<ChatUser[]>;
     }
 
     createChat(chatName:string):Observable<ChatDialog>{
@@ -44,7 +44,11 @@ export class APIService{
     }
 
     uploadAvatar(avatar:File){
-        return this.http.post(this.baseUrl+"/user/avatar",avatar).toPromise().then(res=>{
+        let formData = new FormData();
+        formData.set('avatar',avatar);
+        console.log(formData);
+        console.log(avatar);
+        return this.http.post(this.baseUrl+'/user/avatar',formData).toPromise().then(res=>{
             console.log(res);
         }).catch(error=>{
             console.log(error);

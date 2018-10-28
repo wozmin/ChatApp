@@ -1,3 +1,4 @@
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ScrollChatDirective } from './scrollChat.directive';
@@ -13,16 +14,17 @@ import { ChatHistoryComponent } from './components/chat-history.component';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faUser, faUsers, faAddressBook } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faUsers, faAddressBook, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { ModalModule } from './modals/modal.module';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
-library.add(faUser,faUsers,faAddressBook);
+library.add(faUser,faUsers,faAddressBook,faArrowLeft);
 
 @NgModule({
-    imports:[BrowserModule,FormsModule,CoreModule,FontAwesomeModule,ModalModule,NgbModalModule],
+    imports:[BrowserModule,FormsModule,CoreModule,FontAwesomeModule,ModalModule,NgbModalModule,InfiniteScrollModule],
     providers:[NgbActiveModal],
-    declarations:[ChatComponent,ChatDialogComponent,ChatHeaderComponent, ChatHistoryComponent,ChatHistoryComponent,ChatFormComponent,SliceMessagePipe,ScrollChatDirective],
+    declarations:[ChatComponent,ChatDialogComponent,ChatHeaderComponent, ChatHistoryComponent,
+        ChatHistoryComponent,ChatFormComponent,SliceMessagePipe,ScrollChatDirective],
     exports:[ChatComponent],
 })
 export class ChatModule{}

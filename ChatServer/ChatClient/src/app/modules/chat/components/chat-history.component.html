@@ -1,4 +1,11 @@
-<div class="chat-history" #scrollChat [scrollTop]="scrollChat.scrollHeight">
+<div class="chat-history" 
+    #scrollChat
+    [scrollTop]="scrollChat.scrollHeight"
+    infiniteScroll
+    [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="50"
+    [scrollWindow]="false"
+    (scrolledUp)="loadMoreMessagesHandler()">
     <div *ngFor="let message of messages;index as i" class="chat-message;trackBy:getKey">
       <div class="message-info" [ngClass]="userName==message.userName?'text-right':''">
           <div class="user-info">

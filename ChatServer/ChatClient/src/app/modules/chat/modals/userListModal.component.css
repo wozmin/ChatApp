@@ -93,6 +93,18 @@
     color:#688FB1;
 }
 
+.selected{
+    background-color: #5682A3;
+}
+
+.selected .user-name,.selecte .last-visit{
+    color:#fff;
+}
+
+.selected:hover{
+    background-color: #5682A3;
+}
+
 .modal-footer button{
     color:#4680B3;
     font-size: 16px;
@@ -108,3 +120,4 @@
     background-color: #F2F6FA;
     cursor:pointer;
 }
+

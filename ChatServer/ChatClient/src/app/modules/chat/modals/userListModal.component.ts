@@ -13,16 +13,25 @@ export class UserListModal{
     constructor(public activeModal:NgbActiveModal){}
 
     selectedUserId:string;
+    searchUserName:string;
 
     @Input('users')
-    users:ChatUser[] = [];
-
-    @Input('isCurrentUser')
-    isCurrentUser:boolean;
+    users:ChatUser[];
 
     @Output()
     addUserToChat = new EventEmitter<string>();
     
+    @Output()
+    loadMoreUsers = new EventEmitter();
+
+    ngOnInit(): void {
+        this.users = [];
+    }
+
+    onScroll(){
+        this.loadMoreUsers.emit();
+    }
+
     addUserToChatHandler(){
         this.addUserToChat.emit(this.selectedUserId);
     }

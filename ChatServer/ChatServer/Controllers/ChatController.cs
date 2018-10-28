@@ -32,14 +32,14 @@ namespace ChatServer.Controllers
         }
 
         [HttpGet("{id}/message")]
-        public async Task<IActionResult> GetChatMessages(int id)
+        public async Task<IActionResult> GetChatMessages(int id,int page=1)
         {
-            var chat = await _unitOfWork.Chats.GetByIdAsync(id);
-            if(chat == null)
+            int pageSize = 20;
+            if(await _unitOfWork.Chats.GetByIdAsync(id) == null)
             {
                 return NotFound("Chat was not found");
             }
-            return Ok(_mapper.Map<IEnumerable<ChatMessageModel>>(chat.Messages));
+            return Ok(_mapper.Map<IEnumerable<ChatMessageModel>>(await _unitOfWork.Chats.GetChatMessagesAsync(id,page,pageSize)));
         }
 
         [HttpGet("{id}/member")]

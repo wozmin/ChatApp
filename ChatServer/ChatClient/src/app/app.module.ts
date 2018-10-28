@@ -1,6 +1,6 @@
 import { HttpModule } from '@angular/http';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { LoginModule } from './modules/login/login.module';
+import { AuthModule } from './modules/auth/auth.module';
 import { AppRoutingModule } from './../app-routing.module';
 import { CoreModule } from './core/core.module';
 import { BrowserModule } from '@angular/platform-browser';
@@ -10,13 +10,13 @@ import { FormsModule } from '@angular/forms';
 import { SharedModule } from './shared/shared.module';
 import { ChatModule } from './modules/chat/chat.module';
 import { JwtHttpInterceptor } from './core/interceptors/jwt.interceptor';
-import { UserListModal } from './modules/chat/modals/userListModal.component';
+import { NotifierModule, NotifierService} from 'angular-notifier';
 
 @NgModule({
     imports:[BrowserModule,FormsModule,SharedModule,AppRoutingModule,ChatModule,
-            LoginModule,CoreModule,HttpClientModule,HttpModule],
+            AuthModule,CoreModule,HttpClientModule,HttpModule,NotifierModule],
     declarations:[AppComponent],
-    providers:[{provide:HTTP_INTERCEPTORS,useClass:JwtHttpInterceptor,multi:true}],
+    providers:[{provide:HTTP_INTERCEPTORS,useClass:JwtHttpInterceptor,multi:true},NotifierService],
     bootstrap:[AppComponent]
 })
 export class AppModule{}

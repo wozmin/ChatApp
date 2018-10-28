@@ -23,6 +23,10 @@ namespace ChatServer.MapperProfiles
                 .ForMember(c => c.LastMessageUserName, opt => opt.MapFrom(cvm => cvm.Chat.Messages.LastOrDefault().User.UserName))
                 .ForMember(c => c.LastMessageText, opt => opt.MapFrom(cvm => cvm.Chat.Messages.LastOrDefault().Message))
                 .ForMember(c => c.LastMessageDate, opt => opt.MapFrom(cvm => cvm.Chat.Messages.LastOrDefault().Date));
+            CreateMap<Chat,ChatViewModel>()
+                .ForMember(c => c.LastMessageUserName, opt => opt.MapFrom(cvm => cvm.Messages.LastOrDefault().User.UserName))
+                .ForMember(c => c.LastMessageText, opt => opt.MapFrom(cvm => cvm.Messages.LastOrDefault().Message))
+                .ForMember(c => c.LastMessageDate, opt => opt.MapFrom(cvm => cvm.Messages.LastOrDefault().Date));
         }
     }
 }

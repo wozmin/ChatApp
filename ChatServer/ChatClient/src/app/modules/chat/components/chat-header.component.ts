@@ -14,6 +14,9 @@ export class ChatHeaderComponent{
    @Input('chat-name')
    chatName:string;
 
+   @Input()
+   showBackBtn:boolean = false;
+
    @Output('openUsersModal')
    openUsersModal = new EventEmitter();
  
@@ -23,12 +26,19 @@ export class ChatHeaderComponent{
     @Output('createChat')
     createChat = new EventEmitter();
 
+    @Output()
+    closeChat = new  EventEmitter();
+
     @Output('openChatDetails')
     openChatDetails = new EventEmitter();
 
     
     openChatDetailsHandler(){
         this.openChatDetails.emit();
+    }
+
+    closeChatHandler(){
+        this.closeChat.emit();
     }
 
 

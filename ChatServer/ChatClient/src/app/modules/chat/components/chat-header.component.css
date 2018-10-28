@@ -17,6 +17,7 @@
     position: relative;
     top:32px;
     left:0;
+    width: 100%;
 }
 
 .menu li{
@@ -50,6 +51,21 @@
     background-color: #fff;
 }
 
+.back-btn{
+    display: none;
+    position: relative;
+    top:-8px;
+    left:25px;
+}
+
+.back-btn:hover{
+    cursor:pointer;
+}
+
+.back-btn fa-icon{
+    font-size: 22px;
+    color:#fff;
+}
 
 .menu fa-icon{
     margin-right: 25px;
@@ -71,6 +87,23 @@
 
 .selected-chat:hover{
     cursor: pointer;
+}
+
+@media only screen and (max-width:600px){
+    .burger{
+        left:0;
+        margin-left: auto;
+        margin-right: 25px;
+        z-index:999;
+    } 
+    
+    .navigation{
+        width: 100%;
+    }
+
+    .back-btn{
+        display: block;
+    }
 }
 
 

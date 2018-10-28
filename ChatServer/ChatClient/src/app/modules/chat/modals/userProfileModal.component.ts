@@ -11,11 +11,21 @@ export class UserProfileModal{
 
     constructor(public activeModal:NgbActiveModal ){}
 
+    @Input('isCurrentUser')
+    isCurrentUser:boolean;
+
     @Input('userProfile')
     public userProfile:UserProfile;
 
     @Output()
     uploadAvatar = new EventEmitter<File>();
+
+    @Output()
+    editUser = new EventEmitter();
+
+    editUserHandler(){
+        this.editUser.emit();
+    }
 
     uploadAvatarHandler(avatar:File){
         this.uploadAvatar.emit(avatar);

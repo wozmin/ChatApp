@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ChatServer.Models;
+using ChatServer.Repositories;
 using ChatServer.Services;
 using ChatServer.ViewModel;
 using Microsoft.AspNetCore.Authorization;
@@ -21,12 +22,14 @@ namespace ChatServer.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
         private readonly IAccountService _accountService;
+        private readonly IUnitOfWork _unitOfWork;
         
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IConfiguration configuration,
-            IAccountService accountService
+            IAccountService accountService,
+            IUnitOfWork unitOfWork
         )
         {
             
@@ -34,6 +37,7 @@ namespace ChatServer.Controllers
             _signInManager = signInManager;
             _configuration = configuration;
             _accountService = accountService;
+            _unitOfWork = unitOfWork;
         }
 
         [AllowAnonymous]
@@ -72,9 +76,19 @@ namespace ChatServer.Controllers
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, false);
+
+                user.UserProfile = new UserProfile
+                {
+                    Age = model.Age,
+                    Address = model.Address,
+                };
+
                 var token = _accountService.GenerateJwtToken(model.UserName, user);
 
                 var accessToken = new AccessToken { Token = token, UserName = model.UserName, UserId = user.Id };
+
+                await _unitOfWork.SaveChangesAsync();
+                
                 return Ok(accessToken);
             }
 

@@ -30,14 +30,17 @@ namespace ChatServer.Repositories
            return await _db.AppUsers.FirstOrDefaultAsync(u => u.Id == userId);
         }
 
-        public async Task<IEnumerable<ApplicationUser>> GetAllUsersAsync()
+        public async Task<IEnumerable<ApplicationUser>> GetAllUsersAsync(int page,int pageSize)
         {
-            return await _db.AppUsers.Include(u=>u.UserProfile).ToListAsync();
+            return await _db.AppUsers
+                .Include(u => u.UserProfile)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize).ToListAsync();
         }
 
         public async Task<ApplicationUser> GetUserByNameAsync(string userName)
         {
-            return await _userManager.FindByNameAsync(userName);
+            return await _db.AppUsers.FirstOrDefaultAsync(u => u.UserName == userName);
         }
 
         public bool IsUserConnected(string connectionId)

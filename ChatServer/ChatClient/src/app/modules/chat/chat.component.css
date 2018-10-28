@@ -1,3 +1,7 @@
+:host{
+    height: 100vh;
+}
+
 .chat{
    display: flex;
    background-color: #fff;
@@ -10,15 +14,14 @@
 
 .chat-box{
     width: 69%;
+    height: 100% ;
 }
 
 .show{
     visibility: visible;
 }
 
-.hide{
-    visibility: hidden;
-}
+
 
 .opened{
     background-color: #5682A3;
@@ -26,4 +29,27 @@
 
 .user-list-modal .modal-content{
     border:none;
+}
+
+@media only screen and (max-width:600px){
+    .chat-list{
+        width: 100%;
+    }
+
+    .chat-box{
+        display:none;
+        width: 100%;
+    }
+
+    .chat-box.show{
+        display: block;
+    }
+
+    .hide{
+        
+    }
+
+    .chat-list.hide{
+        display: none;
+    }
 }

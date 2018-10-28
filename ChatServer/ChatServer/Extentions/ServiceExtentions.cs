@@ -24,7 +24,9 @@ namespace ChatServer.Extentions
         {
             services.AddDbContext<ApplicationContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),opt=> {
+                    opt.UseRowNumberForPaging();
+                });
             });
         }
 

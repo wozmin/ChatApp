@@ -34,7 +34,7 @@ namespace ChatServer
             {
                 options.AddPolicy("AllowAll", builder =>
                 {
-                    builder.WithOrigins("http://localhost:4200")
+                 builder.AllowAnyOrigin()
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials();

@@ -73,4 +73,15 @@ export class AuthService {
           this.setUserName(res.userName);
         });
   }
+
+  register(user){
+      return this.http.post(`${this.url}/register`,user,{headers:this.headers})
+      .toPromise()
+      .then(res => res.json())
+      .then(res=>{
+          this.setToken(res.token);
+          this.setUserId(res.userId);
+          this.setUserName(res.userName);
+        });
+  }
 }
