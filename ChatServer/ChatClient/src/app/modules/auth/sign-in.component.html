@@ -8,8 +8,10 @@
           <input id="user-name" name="username" placeholder="user name" type="text" [(ngModel)]="username" />
           <input id="password" name="password" placeholder="password" type="password" [(ngModel)]="password"/>
           <br/>
-          <button class="button" type="submit">Submit</button>
+          <button class="button" type="submit">Sign in</button>
           <br />
+          <div class="text">OR</div>
+          <button class="button sign-up-btn" [routerLink]="['/sign-up']" type="button">Sign Up</button>
         </div>
       </form>
 </div>

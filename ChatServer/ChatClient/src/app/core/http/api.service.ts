@@ -1,6 +1,8 @@
+import { EditUserModel } from './../../shared/models/editUser.model';
+import { catchError } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from "@angular/core";
-import { Observable, throwError } from "rxjs";
+import { Observable, throwError, of } from "rxjs";
 import { ChatDialog } from 'src/app/shared/models/chatDialog.model';
 import { ChatMessage } from 'src/app/shared/models/chat-message.model';
 import { ChatUser } from 'src/app/shared/models/ChatUser.model';
@@ -44,17 +46,31 @@ export class APIService{
     }
 
     uploadAvatar(avatar:File){
-        let formData = new FormData();
-        formData.set('avatar',avatar);
-        console.log(formData);
-        console.log(avatar);
-        return this.http.post(this.baseUrl+'/user/avatar',formData).toPromise().then(res=>{
-            console.log(res);
-        }).catch(error=>{
-            console.log(error);
-        });
-        
+        let fileReader:FileReader = new FileReader();
+        fileReader.onload = (event)=>{
+            let base64img = fileReader.result.slice(23) as string;
+            let extention = avatar.type.slice(6);
+            if(extention ==="jpeg"){
+                extention = "jpg";
+            }
+            console.log(avatar);
+            return this.http.post(this.baseUrl+`/user/avatar`,{
+                base64Avatar:base64img,
+                extention:extention
+            }).toPromise().catch(error=>{
+                console.log(error);
+            })
+        }
+        fileReader.readAsDataURL(avatar);
     }
 
+    deleteAvatar():Observable<string>{
+        return this.http.delete(this.baseUrl +"/user/avatar") as Observable<string>;
+    }
 
+    updateUser(userModel:EditUserModel){
+        return this.http.put(this.baseUrl+"/user/profile",userModel).toPromise().catch(error=>{
+            console.log(error);
+        });
+    }
 }

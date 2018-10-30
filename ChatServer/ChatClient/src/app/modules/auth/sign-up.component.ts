@@ -8,7 +8,7 @@ import { Router } from "@angular/router";
 
 @Component({
     templateUrl:"./sign-up.component.html",
-    styleUrls:["./auth.component.css"]
+    styleUrls:["./sign-up.component.css"]
 })
 export class SignUpComponent{
     
@@ -21,6 +21,7 @@ export class SignUpComponent{
     formGroup:SignInFormGroup = new SignInFormGroup();
     formSubmitted:boolean = false;
     registerModel:RegisterModel;
+    error:any;
 
     ngOnInit(): void {
         this.registerModel = new RegisterModel();
@@ -31,9 +32,12 @@ export class SignUpComponent{
         if(form.valid){
             this.authService.register(this.registerModel)
             .catch(
-                error=>console.log(error));
+                error=>{
+                    this.error = error;
+                    console.log(error);
+                });
             setTimeout(()=>{   
-                if(!this.authService.isTokenExpired()){
+                if(!this.authService.isTokenExpired() && !this.error){
                     this.notifierService.notify('success','You have been authenticated successfully');
                     this.router.navigateByUrl("/");
                     this.formSubmitted = false;

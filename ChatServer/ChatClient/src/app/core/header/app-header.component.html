@@ -10,9 +10,10 @@
     <div class="navigation">
         <nav>
             <ul class="menu animated"  [ngClass]="isMenuVisible?'show-menu slideInDown':''">
-                <li (click)="openUserProfileModalHandler()"> <fa-icon [icon]="['fas', 'user']"></fa-icon>  Profile</li>
-                <li (click)="openUsersModalHandler()"><fa-icon [icon]="['fas','address-book']"></fa-icon>Users</li>
+                <li  [routerLink]="['user',userId,'profile']"> <fa-icon [icon]="['fas', 'user']"></fa-icon>  Profile</li>
+                <li [routerLink]="['']"><fa-icon [icon]="['fas','comment']"></fa-icon>Chats</li>
                 <li (click)="createChatHandler()"><fa-icon [icon]="['fas','users']"></fa-icon>New chat</li>
+                <li (click)="logout()"><fa-icon [icon]="['fas','sign-out-alt']"></fa-icon>Logout</li>
             </ul>
         </nav>    
     </div>

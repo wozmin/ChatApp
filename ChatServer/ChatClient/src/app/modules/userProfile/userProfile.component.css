@@ -1,0 +1,124 @@
+.user-profile{
+    background-color: #ffffff;
+    font-size: 18px;
+    height: 99%;
+}
+
+.user-profile>div{
+    margin:0 10%;
+    margin-top: 30px;
+}
+
+.main-info{
+    display: flex;
+    border-bottom: 2px solid gray;
+    padding-bottom: 30px;
+}
+
+.main-info div:last-child{
+    margin-top: 30px;
+}
+
+.main-info .user-avatar img{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-right: 30px;
+}
+
+.main-info .user-name{
+    color:#5682A3;
+    font-weight: bold;
+}
+
+.main-info .last-visit{
+    color:#BDBDD0;
+}
+
+.main-info .online{
+    color:#D05145;
+}
+
+.profile-details{
+    padding-left: 85px;
+}
+
+.profile-details div,.profile-details button{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.profile-details fa-icon{
+    display: block;
+    width: 40px;
+    margin-right: 30px;
+    font-size: 30px;
+    text-align: center;
+}
+
+button{
+    display: block;
+    background-color: transparent;
+    outline:none;
+    border:none;
+}
+
+button:hover{
+    cursor: pointer;
+    color:#5682A3;
+}
+
+.change-avatar-btn{
+}
+
+.change-avatar-btn input{
+    display: none;
+}
+
+@media only screen and (max-width:600px){
+    
+    .user-profile{
+        height: 100%!important;
+    }
+
+    .main-info{
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .user-profile{
+        font-size: 16px;
+        padding: 0;
+    }
+
+    .main-info .user-avatar img{
+        width: 150px;
+        height: 150px;
+        margin-right: 0;
+    }
+
+    .profile-details{
+        text-align: center;
+        padding-left: 0;
+    }
+
+    .main-info .user-name{
+        text-align: center;
+        font-size: 22px;
+    }
+
+    .user-profile>div{
+        margin:10px 10%;
+    }
+
+    .main-info .last-visit{
+        margin-top: 15px;
+    }
+
+    .main-info div:last-child{
+        margin-top: 10px;
+    }
+}

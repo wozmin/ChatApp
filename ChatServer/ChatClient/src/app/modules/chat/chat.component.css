@@ -8,8 +8,28 @@
 }
 
 .chat-list{
+    max-height: 90vh;
+    overflow: hidden;
     border-right: 2px solid #E9EBED;
     width: 31%;
+}
+
+.chat-list:hover{
+    overflow-y: overlay;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+::-webkit-scrollbar
+{
+    width: 5px;
+    background-color: #fff;
+}
+
+::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: gray;
 }
 
 .chat-box{
@@ -34,6 +54,7 @@
 @media only screen and (max-width:600px){
     .chat-list{
         width: 100%;
+        height: 100vh;
     }
 
     .chat-box{
@@ -52,4 +73,5 @@
     .chat-list.hide{
         display: none;
     }
+
 }

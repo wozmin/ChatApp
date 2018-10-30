@@ -1,6 +1,6 @@
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 
-export class SignInFormControl extends FormControl{
+export class EditProfileFormControl extends FormControl{
     label:string;
     modelProperty:string;
     type:string;
@@ -31,33 +31,29 @@ export class SignInFormControl extends FormControl{
     }
 }
 
-export class SignInFormGroup extends FormGroup{
+export class EditProfileFormGroup extends FormGroup{
     constructor(){
         super({
-            userName:new SignInFormControl("UserName","userName","text","",Validators.compose([
+            userName:new EditProfileFormControl("UserName","userName","text","",Validators.compose([
                 Validators.required,
                 Validators.pattern("[-a-z0-9!#$%&'*+/=?^_`{|}~]+(\.[-a-z0-9!#$%&'*+/=?^_`{|}~]+)*")
             ])),
-            email:new SignInFormControl("Email","email","email","",Validators.compose([
+            email:new EditProfileFormControl("Email","email","email","",Validators.compose([
                 Validators.required,
                 Validators.pattern("^[-a-z0-9!#$%&'*+/=?^_`{|}~]+(?:\.[-a-z0-9!#$%&'*+/=?^_`{|}~]+)*@(?:[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?\.)*(?:aero|arpa|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|[a-z][a-z])$")
             ])),
-            password:new SignInFormControl("Password","password","password","",Validators.compose([
-                Validators.required,
-                Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,}$")
-            ])),
-            age:new SignInFormControl("Age","age","text","",Validators.compose([
+            age:new EditProfileFormControl("Age","age","text","",Validators.compose([
                 Validators.required,
                 Validators.pattern("^[1-9][0-9]?$")
             ])),
-            address:new SignInFormControl("Address","address","text","",Validators.compose([
+            address:new EditProfileFormControl("Address","address","text","",Validators.compose([
                 Validators.required,
             ]))
 
         })
     }
-    get signInControls():SignInFormControl[]{
+    get signInControls():EditProfileFormControl[]{
         return Object.keys(this.controls)
-                .map(k=>this.controls[k] as SignInFormControl);
+                .map(k=>this.controls[k] as EditProfileFormControl);
     }
 }

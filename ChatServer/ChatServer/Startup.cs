@@ -64,6 +64,7 @@ namespace ChatServer
             app.UseCors("AllowAll");
             app.UseResponseCompression();
             app.UseAuthentication();
+            app.UseStaticFiles();
             app.UseSignalR(routes => {
                 routes.MapHub<ChatHub>("/chat");
             });

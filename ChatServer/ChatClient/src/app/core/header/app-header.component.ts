@@ -1,27 +1,28 @@
+import { AuthService } from 'src/app/core/authentication/auth.service';
 import { Component, Input, Output, OnInit, EventEmitter } from "@angular/core";
+import { Router } from '@angular/router';
 
 @Component({
-    selector:"chat-header",
-    templateUrl:"./chat-header.component.html",
-    styleUrls:["./chat-header.component.css"]
+    selector:"app-header",
+    templateUrl:"./app-header.component.html",
+    styleUrls:["./app-header.component.css"]
 })
-export class ChatHeaderComponent{
+export class AppHeaderComponent{
 
-   constructor(){}
+   constructor(private authService:AuthService,private router:Router){}
    
    isMenuVisible:boolean = false;
+   userId:string;
+
+   ngOnInit(): void {
+       this.userId = this.authService.getUserId();
+   }
 
    @Input('chat-name')
    chatName:string;
 
    @Input()
    showBackBtn:boolean = false;
-
-   @Output('openUsersModal')
-   openUsersModal = new EventEmitter();
- 
-   @Output('openUserProfileModal')
-    openUserProfileModal = new EventEmitter()
 
     @Output('createChat')
     createChat = new EventEmitter();
@@ -46,16 +47,13 @@ export class ChatHeaderComponent{
         this.isMenuVisible = !this.isMenuVisible;
     }
 
-    openUsersModalHandler(){
-        this.openUsersModal.emit();
-    }
-
-    openUserProfileModalHandler(){
-        this.openUserProfileModal.emit();
-    }
-
     createChatHandler(){
         this.createChat.emit();
+    }
+
+    logout(){
+        this.authService.logout();
+        this.router.navigateByUrl("/login");
     }
 
 }

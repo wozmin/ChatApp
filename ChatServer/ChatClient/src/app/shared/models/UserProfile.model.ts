@@ -5,4 +5,5 @@ export class UserProfile{
     public isOnline:boolean;
     public address:string;
     public age:number;
+    public email:string;
 }

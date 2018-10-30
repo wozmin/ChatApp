@@ -1,10 +1,10 @@
+import { RouterModule } from '@angular/router';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ScrollChatDirective } from './scrollChat.directive';
 import { SliceMessagePipe } from './sliceMessage.pipe';
 import { CoreModule } from './../../core/core.module';
-import { ChatHeaderComponent } from './components/chat-header.component';
 import { ChatFormComponent } from './components/chat-form.component';
 import { ChatDialogComponent } from './components/chat-dialog.component';
 import { BrowserModule } from '@angular/platform-browser';
@@ -21,9 +21,9 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 library.add(faUser,faUsers,faAddressBook,faArrowLeft);
 
 @NgModule({
-    imports:[BrowserModule,FormsModule,CoreModule,FontAwesomeModule,ModalModule,NgbModalModule,InfiniteScrollModule],
+    imports:[BrowserModule,FormsModule,FontAwesomeModule,ModalModule,NgbModalModule,InfiniteScrollModule,CoreModule,RouterModule],
     providers:[NgbActiveModal],
-    declarations:[ChatComponent,ChatDialogComponent,ChatHeaderComponent, ChatHistoryComponent,
+    declarations:[ChatComponent,ChatDialogComponent, ChatHistoryComponent,
         ChatHistoryComponent,ChatFormComponent,SliceMessagePipe,ScrollChatDirective],
     exports:[ChatComponent],
 })

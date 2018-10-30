@@ -1,12 +1,10 @@
-<chat-header
+<app-header
     [chat-name]="this.chatName"
     [showBackBtn]="isChatOpened"
-    (openUsersModal)="openUsersModal()"
-    (openUserProfileModal)="openUserProfileModal()"
     (createChat)="openNewChatModal()"
     (openChatDetails)="openChatDetailsModal()"
     (closeChat)="closeChat()"
-></chat-header>
+></app-header>
 <div class="chat">
     <div class="chat-list" [class.hide]="isChatOpened">
         <chat-dialog 
@@ -20,7 +18,6 @@
         <chat-history  
         [messages]="chatMessages" 
         [userName]="userName"
-        (openUserProfile)="openUserProfileModal($event)"
         (loadMoreMessages)="loadMoreMessages()"
         >Please Select the Chat</chat-history>
         <chat-form (sendMessage)="sendMessage($event)"></chat-form>

@@ -11,10 +11,11 @@ import { SharedModule } from './shared/shared.module';
 import { ChatModule } from './modules/chat/chat.module';
 import { JwtHttpInterceptor } from './core/interceptors/jwt.interceptor';
 import { NotifierModule, NotifierService} from 'angular-notifier';
+import { UserProfileModule } from './modules/userProfile/userProfil.module';
 
 @NgModule({
     imports:[BrowserModule,FormsModule,SharedModule,AppRoutingModule,ChatModule,
-            AuthModule,CoreModule,HttpClientModule,HttpModule,NotifierModule],
+            AuthModule,CoreModule,HttpClientModule,HttpModule,NotifierModule,UserProfileModule],
     declarations:[AppComponent],
     providers:[{provide:HTTP_INTERCEPTORS,useClass:JwtHttpInterceptor,multi:true},NotifierService],
     bootstrap:[AppComponent]

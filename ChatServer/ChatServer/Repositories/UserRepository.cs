@@ -40,7 +40,7 @@ namespace ChatServer.Repositories
 
         public async Task<ApplicationUser> GetUserByNameAsync(string userName)
         {
-            return await _db.AppUsers.FirstOrDefaultAsync(u => u.UserName == userName);
+            return await _db.AppUsers.Include(u=>u.UserProfile).FirstOrDefaultAsync(u => u.UserName == userName);
         }
 
         public bool IsUserConnected(string connectionId)

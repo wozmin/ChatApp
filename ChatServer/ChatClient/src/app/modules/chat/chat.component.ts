@@ -1,7 +1,6 @@
 import { ChatUser } from 'src/app/shared/models/ChatUser.model';
 import { ChatDetailModal } from './modals/chatDetailModal.component';
 import { UserProfile } from './../../shared/models/UserProfile.model';
-import { UserProfileModal } from './modals/userProfileModal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from './../../core/authentication/auth.service';
 import { HubService } from './../../core/services/hub.service';
@@ -12,6 +11,7 @@ import { OnInit, Component, OnDestroy } from "@angular/core";
 import { Subscription } from 'rxjs';
 import { UserListModal } from './modals/userListModal.component';
 import { newChatModal } from './modals/newChatModal.component';
+import { NotifierService } from 'angular-notifier';
 
 
 @Component({
@@ -36,7 +36,8 @@ export class ChatComponent implements OnInit,OnDestroy{
         private apiService:APIService,
         private hubService:HubService,
         private authService:AuthService,
-        private modalService:NgbModal){
+        private modalService:NgbModal,
+        private notifierService:NotifierService){
     }
 
     ngOnInit(): void {
@@ -51,6 +52,7 @@ export class ChatComponent implements OnInit,OnDestroy{
         });
         this.JoinChatNotification = this.hubService.chat.subscribe(chat=>{
             this.chatDialogs.push(chat);
+            this.notifierService.notify('success','User was added to chat successfully');
         })
         this.hubService.connect();
         this.chatHistoryPage = 1;
@@ -99,17 +101,6 @@ export class ChatComponent implements OnInit,OnDestroy{
        
     }
 
-    openUserProfileModal(userId?:string){
-        const modalRef = this.modalService.open(UserProfileModal,{
-            windowClass:'animated fadeInDown'
-        })
-        let modal =modalRef.componentInstance as UserProfileModal;
-        modal.isCurrentUser = userId?false:true;
-        modalRef.componentInstance.uploadAvatar.subscribe(($event)=>{
-            this.apiService.uploadAvatar($event);
-        })
-        this.apiService.getUserProfile(userId || this.authService.getUserId()).subscribe(data=>modal.userProfile = data);
-    }
 
     openNewChatModal(){
         const modalRef = this.modalService.open(newChatModal,{
@@ -142,6 +133,6 @@ export class ChatComponent implements OnInit,OnDestroy{
 
 
     ngOnDestroy(): void {
-        this.hubService.disconect();
+        //this.hubService.disconect();
     }
 }

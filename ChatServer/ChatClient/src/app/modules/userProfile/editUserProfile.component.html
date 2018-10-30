@@ -1,0 +1,32 @@
+<div class="edit-profile" *ngIf="userProfile">
+    <app-header
+    (createChat)="openNewChatModal()"
+    ></app-header>
+    <div class="container">
+            <form novalidate #form="ngForm" [formGroup]="formGroup" (ngSubmit)="submitForm(form)">
+                    <h1>
+                      Edit Profile
+                    </h1>
+                    <div class="form-content">
+                      <div *ngFor="let control of formGroup.signInControls" class="control">
+                          <input
+                            type="{{control.type}}"
+                            [(ngModel)]="userProfile[control.modelProperty]"
+                            name="{{control.modelProperty}}"
+                            formControlName="{{control.modelProperty}}"
+                            placeholder="{{control.label}}"
+                          >
+                          <ul class="text-danger list-unstyled" *ngIf="(formSubmitted || control.dirty) && control.invalid">
+                                <li *ngFor="let error of control.getValidationMessages()">
+                                    {{error}}
+                                </li>
+                          </ul>
+                      </div>
+                     <div class="controls">
+                         <button type="submit" class="btn btn-primary">Save</button>
+                         <button class="btn btn-danger">Cancel</button>
+                     </div>
+                    </div>
+            </form>
+    </div>
+</div>

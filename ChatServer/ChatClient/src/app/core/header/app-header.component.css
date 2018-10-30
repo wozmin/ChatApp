@@ -25,6 +25,7 @@
     padding: 15px 20px;
     background-color: #fff;
     color:#5682A3;
+    border-bottom: 1px solid gray;
 }
 
 .menu li:hover{
@@ -56,6 +57,7 @@
     position: relative;
     top:-8px;
     left:25px;
+    width: 30px;
 }
 
 .back-btn:hover{
@@ -103,6 +105,11 @@
 
     .back-btn{
         display: block;
+    }
+
+    
+    .selected-chat{
+        right:42%;
     }
 }
 

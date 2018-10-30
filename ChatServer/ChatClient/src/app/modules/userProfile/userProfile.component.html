@@ -1,0 +1,43 @@
+<div class="user-profile" *ngIf="userProfile">
+    <app-header
+        (createChat)="openNewChatModal()"
+    ></app-header>
+    <div class="main-info">
+        <div class="user-avatar">
+            <img src="{{userProfile.avatarUrl || 'https://us.123rf.com/450wm/triken/triken1608/triken160800028/61320729-male-avatar-profile-picture-default-user-avatar-guest-avatar-simply-human-head-vector-illustration-i.jpg?ver=6'}}" alt="avatar">
+        </div>
+        <div>
+            <div class="user-name">
+                {{userProfile.userName}}
+            </div>
+            <div class="online" *ngIf="userProfile.isOnline">
+                online
+            </div>
+            <div class="last-visit" *ngIf="!userProfile.isOnline">
+                last seen {{userProfile.lastVisit|date:"MMM d, y"}} at {{userProfile.lastVisit|date:"hh:mm a"}}
+            </div>
+        </div>
+    </div>
+    <div class="profile-details">
+        <button *ngIf="isCurrentUser" [routerLink]="['/user/',userId,'/profile/','/edit']">
+            <fa-icon [icon]="['fa','edit']"></fa-icon>
+            Edit Profile
+        </button>
+        <button class="change-avatar-btn" (click)="file.click()" *ngIf="isCurrentUser">
+            <fa-icon [icon]="['fa','camera']"></fa-icon> Change avatar
+            <input type="file" (input)="changeAvatar(file.files[0])" #file>
+        </button>
+        <button class="delete-avatar-btn" (click)="deleteAvatar()" *ngIf="isCurrentUser">
+            <fa-icon [icon]="['fa','times']"></fa-icon>Delete avatar
+        </button>
+        <div class="email">
+            <fa-icon [icon]="['fa','envelope']"></fa-icon>{{userProfile.email}}
+        </div>
+        <div class="age">
+            <fa-icon [icon]="['fa','child']"></fa-icon>{{userProfile.age}} years
+        </div>
+        <div class="address">
+            <fa-icon [icon]="['fa','address-book']"></fa-icon>{{userProfile.address}}
+        </div>
+    </div>
+</div>

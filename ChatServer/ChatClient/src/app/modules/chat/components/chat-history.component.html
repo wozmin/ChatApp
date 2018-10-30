@@ -9,10 +9,10 @@
     <div *ngFor="let message of messages;index as i" class="chat-message;trackBy:getKey">
       <div class="message-info" [ngClass]="userName==message.userName?'text-right':''">
           <div class="user-info">
-            <div class="avatar" (click)="openUserProfileHandler(message.userId)">
-                <img src="{{'https://us.123rf.com/450wm/triken/triken1608/triken160800028/61320729-male-avatar-profile-picture-default-user-avatar-guest-avatar-simply-human-head-vector-illustration-i.jpg?ver=6'}}">
+            <div class="avatar" [routerLink]="['user',message.userId,'profile']">
+                <img src="{{message.userAvatarUrl || 'https://us.123rf.com/450wm/triken/triken1608/triken160800028/61320729-male-avatar-profile-picture-default-user-avatar-guest-avatar-simply-human-head-vector-illustration-i.jpg?ver=6'}}">
             </div>
-            <div class="name" (click)="openUserProfileHandler(message.userId)">
+            <div class="name" [routerLink]="['user',message.userId,'profile']">
                 {{message.userName}}
             </div>
           </div>

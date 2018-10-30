@@ -8,6 +8,8 @@ import { Component, Output, EventEmitter } from "@angular/core";
 export class ChatFormComponent{
     message:string;
 
+
+    
     @Output('sendMessage')
     sendMessage = new EventEmitter<string>();
 

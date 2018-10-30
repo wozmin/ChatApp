@@ -6,7 +6,7 @@ import { AuthService } from "src/app/core/authentication/auth.service";
 
 @Component({
     templateUrl:"./sign-in.component.html",
-    styleUrls:["./auth.component.css"]
+    styleUrls:["./sign-in.component.css"]
 })
 export class SignInComponent{
     username:string;
@@ -34,7 +34,7 @@ export class SignInComponent{
                     this.formSubmitted = false;
                     form.reset();
                 }
-            },200);
+            },500);
         }
         
     }

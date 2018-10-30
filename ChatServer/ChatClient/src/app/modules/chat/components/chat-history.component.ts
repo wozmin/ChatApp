@@ -17,16 +17,11 @@ export class ChatHistoryComponent{
   @Input()
   userName:string;
 
-  @Output('openUserProfile')
-  openUserProfile = new EventEmitter<string>();
 
   @Output()
   loadMoreMessages = new EventEmitter();
 
 
-  openUserProfileHandler(userId:string){
-    this.openUserProfile.emit(userId);
-  }
 
   loadMoreMessagesHandler(){
     this.loadMoreMessages.emit();

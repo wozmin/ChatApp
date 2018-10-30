@@ -1,4 +1,5 @@
-import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';                                                        
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -27,6 +28,13 @@ export class JwtHttpInterceptor implements HttpInterceptor {
           }
         });
       }
-      return next.handle(clone);
+      return next.handle(clone).pipe(catchError(error=>{
+          if(error.status === 401){
+              this.authService.logout();
+              this.router.navigateByUrl('/login');
+          }
+
+          return throwError(error);
+      }));
   }
 }

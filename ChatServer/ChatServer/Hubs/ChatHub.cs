@@ -63,7 +63,7 @@ namespace ChatServer.Hubs
                 UserName = chatMessage.UserName
             };
             await Clients.Group(chat.Id.ToString()).SendAsync("SendMessage",message);
-            await Clients.Caller.SendAsync("SendMessage",message);
+            //await Clients.Caller.SendAsync("SendMessage",message);
             chat.Messages.Add(new ChatMessage {
                 Chat = chat,
                 Message = chatMessage.Message,

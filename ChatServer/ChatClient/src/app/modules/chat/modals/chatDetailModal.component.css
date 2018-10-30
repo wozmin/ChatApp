@@ -123,3 +123,21 @@
 .online{
     color:#688FB1;
 }
+
+@media only screen and (max-width:600px){
+    .chat-img{
+        margin-right: 20px;
+    }
+
+    .new-member{
+        margin-left: 10px;
+    }
+
+    .members fa-icon{
+        margin-left: 5px;
+    }
+
+    .user{
+        padding-left: 60px;
+    }
+}
