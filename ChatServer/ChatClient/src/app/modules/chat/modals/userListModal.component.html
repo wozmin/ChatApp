@@ -1,4 +1,4 @@
-<div *ngIf="users.length">
+<div *ngIf="users.length>0">
     <div class="modal-header">
         <h4 class="modal-title">Users</h4>
         <button type="button" class="close-btn" (click)="activeModal.dismiss()">
@@ -20,7 +20,7 @@
         (scrolled)="onScroll()"
         >
             <div class="user-info" *ngFor="let user of users | filter:searchUserName" (click)="selectUser(user.id)" [class.selected]="user.id == selectedUserId">
-                    <div class="user-avatar">
+                    <div class="user-avatar" [routerLink]="['user',user.id,'profile']">
                         <img src="{{user.avatarUrl || 'https://us.123rf.com/450wm/triken/triken1608/triken160800028/61320729-male-avatar-profile-picture-default-user-avatar-guest-avatar-simply-human-head-vector-illustration-i.jpg?ver=6'}}" alt="userAvatar">
                     </div>
                     <div>

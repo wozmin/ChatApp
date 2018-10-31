@@ -9,7 +9,7 @@
     </div>
     <div class="navigation">
         <nav>
-            <ul class="menu animated"  [ngClass]="isMenuVisible?'show-menu slideInDown':''">
+            <ul class="menu animated"  [ngClass]="isMenuVisible?'show-menu slideInDown':'slideInUp'">
                 <li  [routerLink]="['user',userId,'profile']"> <fa-icon [icon]="['fas', 'user']"></fa-icon>  Profile</li>
                 <li [routerLink]="['']"><fa-icon [icon]="['fas','comment']"></fa-icon>Chats</li>
                 <li (click)="createChatHandler()"><fa-icon [icon]="['fas','users']"></fa-icon>New chat</li>

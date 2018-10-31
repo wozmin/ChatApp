@@ -88,8 +88,8 @@ namespace ChatServer.Controllers
         public async Task<IActionResult> DeleteAvatar()
         {
             var user = await _unitOfWork.Users.GetUserByNameAsync(User.Identity.Name);
-            var extention = user.UserProfile.AvatarUrl.Substring(user.UserProfile.AvatarUrl.Length - Guid.NewGuid().ToString().Length+6);
-            var path = Path.Combine(_environment.WebRootPath, "Uploads", $"{user.Id}-avatar.{extention}");
+            var extention = user.UserProfile.AvatarUrl.Substring(user.UserProfile.AvatarUrl.Length - (Guid.NewGuid().ToString().Length+7));
+            var path = Path.Combine(_environment.WebRootPath, "Uploads", $"{user.Id}-avatar{extention}");
             if (System.IO.File.Exists(path))
             {
                 System.IO.File.Delete(path);

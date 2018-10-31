@@ -64,7 +64,13 @@ namespace ChatServer
             app.UseCors("AllowAll");
             app.UseResponseCompression();
             app.UseAuthentication();
-            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                OnPrepareResponse = ctx =>
+                {
+                    ctx.Context.Response.Headers.Add("Cache-Control", "public,max-age=600");
+                }
+            });
             app.UseSignalR(routes => {
                 routes.MapHub<ChatHub>("/chat");
             });

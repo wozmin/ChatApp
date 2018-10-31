@@ -12,10 +12,6 @@ export class AppComponent{
 
     }
 
-    ngOnInit(): void {
-        this.hubService.connect();
-    }
-
     ngOnDestroy(): void {
         this.hubService.disconect();
     }

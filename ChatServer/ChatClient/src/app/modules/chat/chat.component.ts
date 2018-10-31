@@ -61,16 +61,20 @@ export class ChatComponent implements OnInit{
             this.chatUsers.push(user);
             this.notifierService.notify('success','User was added successfully');
         })
-        this.chatHistoryPage = 1;
+        this.hubService.connect();
         
     }
 
     openChat(chatInfo:any){
+        this.chatHistoryPage = 1;
         this.isChatOpened = true;
         this.chatMessages = [];
         this.chatId = chatInfo.chatId;
         this.chatName = chatInfo.chatName;
-        this.apiService.getChatMessages(this.chatId,this.chatHistoryPage).subscribe(data=>this.chatMessages = data);
+        this.apiService.getChatMessages(this.chatId,this.chatHistoryPage).subscribe(data=>{
+            data.map(msg=>this.chatMessages.unshift(msg));
+            console.log(data);
+        });
         this.hubService.joinChat(this.authService.getUserId(),this.chatId);
     }
 
@@ -82,6 +86,7 @@ export class ChatComponent implements OnInit{
         this.chatHistoryPage++;
         this.apiService.getChatMessages(this.chatId,this.chatHistoryPage).subscribe(messages=>{
             messages.map(message=>this.chatMessages.unshift(message));
+            console.log(this.chatMessages);
         });
     }
 
@@ -127,8 +132,7 @@ export class ChatComponent implements OnInit{
         });
         let modal = modalRef.componentInstance as ChatDetailModal;
         modal.chatName = this.chatName;
-        this.apiService.getChatUsers(this.chatId).subscribe(users=>this.chatUsers = users);
-        modal.members = this.chatUsers;
+        this.apiService.getChatUsers(this.chatId).subscribe(users=>modal.members = users);
     }
 
 
@@ -136,5 +140,9 @@ export class ChatComponent implements OnInit{
     sendMessage(message:string){
         console.log(this.authService.getUserName());
         this.hubService.sendMessage({message:message,userName:this.authService.getUserName(),chatId:this.chatId});
+    }
+
+    ngOnDestroy(): void {
+        this.modalService.dismissAll();
     }
 }

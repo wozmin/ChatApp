@@ -1,6 +1,9 @@
+import { APIService } from './../http/api.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from 'src/app/core/authentication/auth.service';
 import { Component, Input, Output, OnInit, EventEmitter } from "@angular/core";
 import { Router } from '@angular/router';
+import { UserListModal } from 'src/app/modules/chat/modals/userListModal.component';
 
 @Component({
     selector:"app-header",
@@ -9,11 +12,16 @@ import { Router } from '@angular/router';
 })
 export class AppHeaderComponent{
 
-   constructor(private authService:AuthService,private router:Router){}
+   constructor(
+       private authService:AuthService,
+       private router:Router,
+       private modalService:NgbModal,
+       private apiService:APIService
+       ){}
    
    isMenuVisible:boolean = false;
    userId:string;
-
+   
    ngOnInit(): void {
        this.userId = this.authService.getUserId();
    }
@@ -37,6 +45,8 @@ export class AppHeaderComponent{
     openChatDetailsHandler(){
         this.openChatDetails.emit();
     }
+
+   
 
     closeChatHandler(){
         this.closeChat.emit();

@@ -63,8 +63,8 @@ namespace ChatServer.Repositories
             return await _db.ChatMessages
                 .Include(cm=>cm.User)
                 .ThenInclude(u=>u.UserProfile)
+                .OrderByDescending(m => m.Id)
                 .Where(c => c.Chat.Id == chatId)
-                .OrderByDescending(m=>m.Date)
                 .Skip((page -1)*pageSize)
                 .Take(pageSize)
                 .ToListAsync();

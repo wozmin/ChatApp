@@ -12,12 +12,13 @@ import { faSearch, faCamera, faUser, faUsers} from '@fortawesome/free-solid-svg-
 import {  NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { newChatModal } from './newChatModal.component';
 import { EditUserModal } from './editUserModal.component';
+import { RouterModule } from '@angular/router';
 
 
 library.add(faSearch,faCamera,faUser,faUsers);
 
 @NgModule({
-    imports:[CommonModule,FontAwesomeModule,NgbModalModule,FormsModule,InfiniteScrollModule],
+    imports:[CommonModule,FontAwesomeModule,NgbModalModule,FormsModule,InfiniteScrollModule,RouterModule],
     declarations:[ChatDetailModal,UserListModal,newChatModal,FilterPipe,EditUserModal],
     entryComponents:[ChatDetailModal,UserListModal,newChatModal,EditUserModal],
     exports:[newChatModal]

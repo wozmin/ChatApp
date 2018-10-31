@@ -49,6 +49,8 @@ namespace ChatServer.Controllers
             if (result.Succeeded)
             {
                 ApplicationUser user = _userManager.Users.SingleOrDefault(r => r.UserName == model.UserName);
+                user.IsOnline = true;
+                await _unitOfWork.SaveChangesAsync();
                 var token = _accountService.GenerateJwtToken(model.UserName, user);
                 return Ok(new AccessToken { Token = token, UserName = user.UserName, UserId = user.Id });
             }
