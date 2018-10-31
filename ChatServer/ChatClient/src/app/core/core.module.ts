@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from './authentication/auth.service';
 import { APIService } from './http/api.service';
@@ -13,7 +14,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 library.add(faUser,faUsers,faAddressBook,faArrowLeft,faSignOutAlt,faComment);
 @NgModule({
-    imports:[FontAwesomeModule,BrowserModule,RouterModule],
+    imports:[FontAwesomeModule,CommonModule,RouterModule],
     declarations:[AppHeaderComponent],
     providers:[APIService,AuthService,HubService,AuthGuard,JwtHttpInterceptor],
     exports:[AppHeaderComponent]

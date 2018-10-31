@@ -59,11 +59,12 @@ namespace ChatServer.Controllers
             var bytes = Convert.FromBase64String(avatar.Base64Avatar);
             var path = Path.Combine(_environment.WebRootPath, "Uploads");
             var user = await _unitOfWork.Users.GetUserByNameAsync(User.Identity.Name);
+            var version = Guid.NewGuid().ToString();
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
-            var file = Path.Combine(path, $"{user.Id}-avatar.{avatar.Extention}");
+            var file = Path.Combine(path, $"{user.Id}-avatar-v={version}.{avatar.Extention}");
             if (System.IO.File.Exists(file)) 
             {
                 System.IO.File.Delete(file);
@@ -77,9 +78,9 @@ namespace ChatServer.Controllers
                 }
 
             }
-            user.UserProfile.AvatarUrl = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}//Uploads//{user.Id}-avatar.{avatar.Extention}";
+            user.UserProfile.AvatarUrl = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}//Uploads//{user.Id}-avatar-v={version}.{avatar.Extention}";
             await _unitOfWork.SaveChangesAsync();
-            return Ok("User avatar was saved");
+            return Ok(user.UserProfile.AvatarUrl);
         }
 
         [Authorize]
@@ -87,7 +88,7 @@ namespace ChatServer.Controllers
         public async Task<IActionResult> DeleteAvatar()
         {
             var user = await _unitOfWork.Users.GetUserByNameAsync(User.Identity.Name);
-            var extention = user.UserProfile.AvatarUrl.Substring(user.UserProfile.AvatarUrl.Length - 3);
+            var extention = user.UserProfile.AvatarUrl.Substring(user.UserProfile.AvatarUrl.Length - Guid.NewGuid().ToString().Length+6);
             var path = Path.Combine(_environment.WebRootPath, "Uploads", $"{user.Id}-avatar.{extention}");
             if (System.IO.File.Exists(path))
             {

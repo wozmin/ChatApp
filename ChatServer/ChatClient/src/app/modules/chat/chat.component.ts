@@ -19,16 +19,19 @@ import { NotifierService } from 'angular-notifier';
     templateUrl:"./chat.component.html",
     styleUrls:["./chat.component.css"]
 })
-export class ChatComponent implements OnInit,OnDestroy{
+export class ChatComponent implements OnInit{
 
     chatId:number;
     chatName:string;
     chatDialogs:ChatDialog[];
     chatMessages:ChatMessage[] = [];
+    chatUsers:ChatUser[] = [];
     isChatOpened:boolean = false;
     userName:string;
     MessageNotification:Subscription;
-    JoinChatNotification:Subscription;
+    AddToChatNotification:Subscription;
+    JoinChatNotification :Subscription;
+
     userPage:number;
     chatHistoryPage:number;
 
@@ -50,11 +53,14 @@ export class ChatComponent implements OnInit,OnDestroy{
             chat.lastMessageText = msg.messageText;
             chat.lastMessageUserName = msg.userName;
         });
-        this.JoinChatNotification = this.hubService.chat.subscribe(chat=>{
+        this.AddToChatNotification = this.hubService.chat.subscribe(chat=>{
             this.chatDialogs.push(chat);
             this.notifierService.notify('success','User was added to chat successfully');
         })
-        this.hubService.connect();
+        this.JoinChatNotification = this.hubService.user.subscribe(user=>{
+            this.chatUsers.push(user);
+            this.notifierService.notify('success','User was added successfully');
+        })
         this.chatHistoryPage = 1;
         
     }
@@ -121,7 +127,8 @@ export class ChatComponent implements OnInit,OnDestroy{
         });
         let modal = modalRef.componentInstance as ChatDetailModal;
         modal.chatName = this.chatName;
-        this.apiService.getChatUsers(this.chatId).subscribe(users=>modal.members = users);
+        this.apiService.getChatUsers(this.chatId).subscribe(users=>this.chatUsers = users);
+        modal.members = this.chatUsers;
     }
 
 
@@ -129,10 +136,5 @@ export class ChatComponent implements OnInit,OnDestroy{
     sendMessage(message:string){
         console.log(this.authService.getUserName());
         this.hubService.sendMessage({message:message,userName:this.authService.getUserName(),chatId:this.chatId});
-    }
-
-
-    ngOnDestroy(): void {
-        //this.hubService.disconect();
     }
 }

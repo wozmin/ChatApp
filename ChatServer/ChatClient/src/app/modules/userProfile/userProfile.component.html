@@ -19,7 +19,7 @@
         </div>
     </div>
     <div class="profile-details">
-        <button *ngIf="isCurrentUser" [routerLink]="['/user/',userId,'/profile/','/edit']">
+        <button *ngIf="isCurrentUser" [routerLink]="['/user/'+userId+'/profile/edit']">
             <fa-icon [icon]="['fa','edit']"></fa-icon>
             Edit Profile
         </button>

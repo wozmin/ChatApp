@@ -50,11 +50,18 @@ export class UserProfileComponent{
     }
 
     changeAvatar(avatar:File){
-        this.apiService.uploadAvatar(avatar);
+        this.apiService.uploadAvatar(avatar,this.updateProfileAvatar);
+        console.log(this.userProfile.avatarUrl);
+        this.notifierService.notify("success","Avatar was updated successfully");
+    }
+
+    updateProfileAvatar=(url:string)=>{
+        this.userProfile.avatarUrl = url;
     }
 
     deleteAvatar(){
         this.apiService.deleteAvatar().subscribe(res=>{
+            this.updateProfileAvatar(null);
             this.notifierService.notify('success','Avatar was deleted successfully');
         })
     }

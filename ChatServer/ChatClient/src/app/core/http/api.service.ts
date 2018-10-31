@@ -45,7 +45,8 @@ export class APIService{
         return this.http.get(this.baseUrl+`/chat/${chatId}/member`) as Observable<ChatUser[]>;
     }
 
-    uploadAvatar(avatar:File){
+    uploadAvatar(avatar:File,onAvatarUpdated:any){
+        let avatarUrl:string;
         let fileReader:FileReader = new FileReader();
         fileReader.onload = (event)=>{
             let base64img = fileReader.result.slice(23) as string;
@@ -53,12 +54,11 @@ export class APIService{
             if(extention ==="jpeg"){
                 extention = "jpg";
             }
-            console.log(avatar);
             return this.http.post(this.baseUrl+`/user/avatar`,{
                 base64Avatar:base64img,
                 extention:extention
-            }).toPromise().catch(error=>{
-                console.log(error);
+            }).subscribe((url:string)=>{
+                onAvatarUpdated(url);
             })
         }
         fileReader.readAsDataURL(avatar);

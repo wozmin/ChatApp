@@ -11,8 +11,7 @@ const routes:Routes = [
     {path:'',component:ChatComponent,canActivate:[AuthGuard]},
     {path:'login',component:SignInComponent},
     {path:'sign-up',component:SignUpComponent},
-    {path:'user/:id/profile', component:UserProfileComponent},
-    {path:'user/:id/profile/edit', component:EditUserProfileComponent},
+    {path:'user/:id/profile', loadChildren:"./app/modules/userProfile/userProfile.module#UserProfileModule",canActivate:[AuthGuard]},
     {path:'**',redirectTo:'login'}
 ]
 

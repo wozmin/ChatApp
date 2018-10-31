@@ -1,3 +1,4 @@
+import { ChatUser } from 'src/app/shared/models/ChatUser.model';
 
 import { ChatMessage } from './../../shared/models/chat-message.model';
 import { AuthService } from 'src/app/core/authentication/auth.service';
@@ -11,6 +12,7 @@ export class HubService {
     private hubConnection:HubConnection;
     message = new Subject<ChatMessage>();
     chat = new Subject<ChatDialog>();
+    user = new Subject<ChatUser>();
 
     constructor(private authService:AuthService){
     }
@@ -29,6 +31,10 @@ export class HubService {
         this.hubConnection.on("JoinChat",(chat:ChatDialog)=>{
             this.chat.next(chat);
         });
+
+        this.hubConnection.on("OnJoinedChat",(user:ChatUser)=>{
+            this.user.next(user);
+        })
 
         this.hubConnection.start().catch(error=>console.log(error));
     }

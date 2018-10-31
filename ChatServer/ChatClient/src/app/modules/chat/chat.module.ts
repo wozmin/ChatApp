@@ -17,12 +17,13 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faUser, faUsers, faAddressBook, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { ModalModule } from './modals/modal.module';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { HubService } from 'src/app/core/services/hub.service';
 
 library.add(faUser,faUsers,faAddressBook,faArrowLeft);
 
 @NgModule({
     imports:[BrowserModule,FormsModule,FontAwesomeModule,ModalModule,NgbModalModule,InfiniteScrollModule,CoreModule,RouterModule],
-    providers:[NgbActiveModal],
+    providers:[NgbActiveModal,HubService],
     declarations:[ChatComponent,ChatDialogComponent, ChatHistoryComponent,
         ChatHistoryComponent,ChatFormComponent,SliceMessagePipe,ScrollChatDirective],
     exports:[ChatComponent],

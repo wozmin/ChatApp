@@ -46,6 +46,7 @@ namespace ChatServer.Hubs
                 _unitOfWork.Chats.AddToChat(chatId, userId);
                 await _unitOfWork.SaveChangesAsync();
                 await Clients.Client(user.ConnectionId).SendAsync("JoinChat", _mapper.Map<ChatViewModel>(chat));
+                await Clients.Caller.SendAsync("OnJoinedChat", _mapper.Map<ChatUserViewModel>(user));
             }
         }
 

@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { FilterPipe } from './filter.pipe';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { FormsModule } from '@angular/forms';
@@ -16,7 +17,7 @@ import { EditUserModal } from './editUserModal.component';
 library.add(faSearch,faCamera,faUser,faUsers);
 
 @NgModule({
-    imports:[BrowserModule,FontAwesomeModule,NgbModalModule,FormsModule,InfiniteScrollModule],
+    imports:[CommonModule,FontAwesomeModule,NgbModalModule,FormsModule,InfiniteScrollModule],
     declarations:[ChatDetailModal,UserListModal,newChatModal,FilterPipe,EditUserModal],
     entryComponents:[ChatDetailModal,UserListModal,newChatModal,EditUserModal],
     exports:[newChatModal]
