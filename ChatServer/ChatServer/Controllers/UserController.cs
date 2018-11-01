@@ -57,6 +57,7 @@ namespace ChatServer.Controllers
         public async Task<IActionResult> UploadAvatar([FromBody]AvatarViewModel avatar)
         {
             var bytes = Convert.FromBase64String(avatar.Base64Avatar);
+            string baseUrl = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
             var path = Path.Combine(_environment.WebRootPath, "Uploads");
             var user = await _unitOfWork.Users.GetUserByNameAsync(User.Identity.Name);
             var version = Guid.NewGuid().ToString();
@@ -64,10 +65,12 @@ namespace ChatServer.Controllers
             {
                 Directory.CreateDirectory(path);
             }
+            string oldAvatarPath = user.UserProfile.AvatarUrl.Substring(baseUrl.Length + 11);
+            string oldAvatar = Path.Combine(_environment.WebRootPath, "Uploads", oldAvatarPath);
             var file = Path.Combine(path, $"{user.Id}-avatar-v={version}.{avatar.Extention}");
-            if (System.IO.File.Exists(file)) 
+            if (System.IO.File.Exists(oldAvatar))
             {
-                System.IO.File.Delete(file);
+                System.IO.File.Delete(oldAvatar);
             }
             if (bytes.Length > 0)
             {
@@ -78,7 +81,7 @@ namespace ChatServer.Controllers
                 }
 
             }
-            user.UserProfile.AvatarUrl = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}//Uploads//{user.Id}-avatar-v={version}.{avatar.Extention}";
+            user.UserProfile.AvatarUrl = $"{baseUrl}//Uploads//{user.Id}-avatar-v={version}.{avatar.Extention}";
             await _unitOfWork.SaveChangesAsync();
             return Ok(user.UserProfile.AvatarUrl);
         }
@@ -88,11 +91,12 @@ namespace ChatServer.Controllers
         public async Task<IActionResult> DeleteAvatar()
         {
             var user = await _unitOfWork.Users.GetUserByNameAsync(User.Identity.Name);
-            var extention = user.UserProfile.AvatarUrl.Substring(user.UserProfile.AvatarUrl.Length - (Guid.NewGuid().ToString().Length+7));
-            var path = Path.Combine(_environment.WebRootPath, "Uploads", $"{user.Id}-avatar{extention}");
-            if (System.IO.File.Exists(path))
+            string baseUrl = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
+            var path = user.UserProfile.AvatarUrl.Substring(baseUrl.Length+11);
+            var file = Path.Combine(_environment.WebRootPath,"Uploads",path);
+            if (System.IO.File.Exists(file))
             {
-                System.IO.File.Delete(path);
+                System.IO.File.Delete(file);
                 user.UserProfile.AvatarUrl = null;
                 await _unitOfWork.SaveChangesAsync();
                 return NoContent();

@@ -1,3 +1,4 @@
+import { HubService } from './../../core/services/hub.service';
 import { NotifierService } from 'angular-notifier';
 import { Component } from "@angular/core";
 import { NgForm } from "@angular/forms";
@@ -17,7 +18,9 @@ export class SignInComponent{
     constructor(
         private authService:AuthService,
         private router:Router,
-        private notifierService:NotifierService){}
+        private notifierService:NotifierService,
+        private hubService:HubService
+        ){}
 
     login(form:NgForm){
         this.formSubmitted = true;
@@ -25,6 +28,8 @@ export class SignInComponent{
             this.authService.login({
                 userName:this.username,
                 password:this.password
+            }).then(res=>{
+                this.hubService.connect();
             }).catch(
                 error=>this.error = error.text());
             setTimeout(()=>{   

@@ -3,7 +3,11 @@
             <h1>
               Sign up
             </h1>
-            <div class="error"></div>
+            <ul class="errors">
+              <li *ngFor="let error of errors">
+                {{error}}
+              </li>
+            </ul>
             <div class="form-content">
               <div *ngFor="let control of formGroup.signInControls" class="control">
                   <input

@@ -61,7 +61,7 @@ export class ChatComponent implements OnInit{
             this.chatUsers.push(user);
             this.notifierService.notify('success','User was added successfully');
         })
-        this.hubService.connect();
+      //  this.hubService.connect();
         
     }
 
@@ -73,7 +73,6 @@ export class ChatComponent implements OnInit{
         this.chatName = chatInfo.chatName;
         this.apiService.getChatMessages(this.chatId,this.chatHistoryPage).subscribe(data=>{
             data.map(msg=>this.chatMessages.unshift(msg));
-            console.log(data);
         });
         this.hubService.joinChat(this.authService.getUserId(),this.chatId);
     }
@@ -96,20 +95,9 @@ export class ChatComponent implements OnInit{
             windowClass:'animated fadeInDown user-list-modal'
         });   
         const modal = modalRef.componentInstance as UserListModal;
-        this.apiService.getUsers(this.userPage).subscribe(data=>{
-            modal.users = data;
-            console.log(data);
-        });
         modalRef.componentInstance.addUserToChat.subscribe(($event)=>{
             this.hubService.joinChat($event,this.chatId);
         });
-        modalRef.componentInstance.loadMoreUsers.subscribe(()=>{
-            this.userPage++;
-            this.apiService.getUsers(this.userPage).subscribe(data=>{
-                data.map(user=>modal.users.push(user));
-            })
-        })
-       
     }
 
 

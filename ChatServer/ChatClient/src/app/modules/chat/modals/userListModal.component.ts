@@ -10,26 +10,37 @@ import { EventEmitter } from '@angular/core';
 })
 export class UserListModal{
     
-    constructor(public activeModal:NgbActiveModal){}
+    constructor(
+        public activeModal:NgbActiveModal,
+        private apiService:APIService
+        ){}
 
     selectedUserId:string;
     searchUserName:string;
+    userPage:number;
 
-    @Input('users')
     users:ChatUser[];
+
+    @Input()
+    isAddBtnVisible:boolean = false;
 
     @Output()
     addUserToChat = new EventEmitter<string>();
     
-    @Output()
-    loadMoreUsers = new EventEmitter();
-
     ngOnInit(): void {
+        this.userPage = 1;
         this.users = [];
+        this.apiService.getUsers(this.userPage).subscribe((users:ChatUser[])=>{
+            this.users = users;
+        });
     }
+    
 
     onScroll(){
-        this.loadMoreUsers.emit();
+        this.userPage++;
+        this.apiService.getUsers(this.userPage).subscribe(users=>{
+            users.map(user=>this.users.push(user));
+        });
     }
 
     addUserToChatHandler(){

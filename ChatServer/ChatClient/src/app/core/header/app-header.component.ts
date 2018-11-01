@@ -1,3 +1,4 @@
+import { HubService } from './../services/hub.service';
 import { APIService } from './../http/api.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from 'src/app/core/authentication/auth.service';
@@ -16,7 +17,8 @@ export class AppHeaderComponent{
        private authService:AuthService,
        private router:Router,
        private modalService:NgbModal,
-       private apiService:APIService
+       private apiService:APIService,
+       private hubService:HubService
        ){}
    
    isMenuVisible:boolean = false;
@@ -46,7 +48,11 @@ export class AppHeaderComponent{
         this.openChatDetails.emit();
     }
 
-   
+    openUsersModal(){
+        const modalRef = this.modalService.open(UserListModal,{
+            windowClass:'animated slideInDown'
+        })
+    }
 
     closeChatHandler(){
         this.closeChat.emit();
@@ -63,6 +69,7 @@ export class AppHeaderComponent{
 
     logout(){
         this.authService.logout();
+        this.hubService.disconect();
         this.router.navigateByUrl("/login");
     }
 

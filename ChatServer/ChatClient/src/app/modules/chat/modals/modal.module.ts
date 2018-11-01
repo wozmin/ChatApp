@@ -1,3 +1,4 @@
+import { CoreModule } from './../../../core/core.module';
 import { CommonModule } from '@angular/common';
 import { FilterPipe } from './filter.pipe';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
@@ -18,7 +19,7 @@ import { RouterModule } from '@angular/router';
 library.add(faSearch,faCamera,faUser,faUsers);
 
 @NgModule({
-    imports:[CommonModule,FontAwesomeModule,NgbModalModule,FormsModule,InfiniteScrollModule,RouterModule],
+    imports:[CommonModule,FontAwesomeModule,NgbModalModule,FormsModule,InfiniteScrollModule,RouterModule,CoreModule],
     declarations:[ChatDetailModal,UserListModal,newChatModal,FilterPipe,EditUserModal],
     entryComponents:[ChatDetailModal,UserListModal,newChatModal,EditUserModal],
     exports:[newChatModal]

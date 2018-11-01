@@ -104,25 +104,7 @@
 }
 
 
-.user-avatar img{
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 10px;
-}
 
-.user-name{
-    color:#000;
-    font-weight: bold;
-}
-
-.last-visit{
-    color:#B5B5B5;
-}
-
-.online{
-    color:#688FB1;
-}
 
 @media only screen and (max-width:600px){
     .chat-img{
