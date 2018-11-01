@@ -31,10 +31,15 @@ export class SignUpComponent{
     }
 
     submitForm(form:NgForm){
+        this.errors =[];
         this.formSubmitted = true;
         if(form.valid){
             this.authService.register(this.registerModel).then(res=>{
+                this.router.navigateByUrl("/");
                 this.hubService.connect();
+                this.notifierService.notify('success','You have been authenticated successfully');
+                this.formSubmitted = false;
+                form.reset();
             })
             .catch(error=>{
                 if(error.status === 400){
@@ -44,19 +49,11 @@ export class SignUpComponent{
                             this.formGroup.controls[fieldName].setErrors({invalid:true});
                         }
                         else{
-                            this.errors.push(validationErrorDictionary[fieldName]);
+                            this.errors.push(validationErrorDictionary[fieldName].description);
                         }
                     }
                 }
             });
-            setTimeout(()=>{   
-                if(!this.authService.isTokenExpired() && !this.errors){
-                    this.notifierService.notify('success','You have been authenticated successfully');
-                    this.router.navigateByUrl("/");
-                    this.formSubmitted = false;
-                    form.reset();
-                }
-            },200);
         }
     }
 }

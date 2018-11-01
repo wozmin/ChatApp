@@ -42,7 +42,7 @@ export class EditProfileFormGroup extends FormGroup{
                 Validators.required,
                 Validators.pattern("^[-a-z0-9!#$%&'*+/=?^_`{|}~]+(?:\.[-a-z0-9!#$%&'*+/=?^_`{|}~]+)*@(?:[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?\.)*(?:aero|arpa|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|[a-z][a-z])$")
             ])),
-            age:new EditProfileFormControl("Age","age","text","",Validators.compose([
+            age:new EditProfileFormControl("Age","age","number","",Validators.compose([
                 Validators.required,
                 Validators.pattern("^[1-9][0-9]?$")
             ])),

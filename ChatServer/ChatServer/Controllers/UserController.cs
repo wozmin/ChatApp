@@ -65,13 +65,17 @@ namespace ChatServer.Controllers
             {
                 Directory.CreateDirectory(path);
             }
-            string oldAvatarPath = user.UserProfile.AvatarUrl.Substring(baseUrl.Length + 11);
-            string oldAvatar = Path.Combine(_environment.WebRootPath, "Uploads", oldAvatarPath);
-            var file = Path.Combine(path, $"{user.Id}-avatar-v={version}.{avatar.Extention}");
-            if (System.IO.File.Exists(oldAvatar))
+            
+            if (user.UserProfile.AvatarUrl!=null)
             {
-                System.IO.File.Delete(oldAvatar);
+                string oldAvatarPath = user.UserProfile.AvatarUrl.Substring(baseUrl.Length + 11);
+                string oldAvatar = Path.Combine(_environment.WebRootPath, "Uploads", oldAvatarPath);
+                if (System.IO.File.Exists(oldAvatar))
+                {
+                    System.IO.File.Delete(oldAvatar);
+                }
             }
+            var file = Path.Combine(path, $"{user.Id}-avatar-v={version}.{avatar.Extention}");
             if (bytes.Length > 0)
             {
                 using (var stream = new FileStream(file, FileMode.Create))
@@ -91,15 +95,18 @@ namespace ChatServer.Controllers
         public async Task<IActionResult> DeleteAvatar()
         {
             var user = await _unitOfWork.Users.GetUserByNameAsync(User.Identity.Name);
-            string baseUrl = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
-            var path = user.UserProfile.AvatarUrl.Substring(baseUrl.Length+11);
-            var file = Path.Combine(_environment.WebRootPath,"Uploads",path);
-            if (System.IO.File.Exists(file))
+            if (user.UserProfile.AvatarUrl != null)
             {
-                System.IO.File.Delete(file);
-                user.UserProfile.AvatarUrl = null;
-                await _unitOfWork.SaveChangesAsync();
-                return NoContent();
+                string baseUrl = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
+                var path = user.UserProfile.AvatarUrl.Substring(baseUrl.Length + 11);
+                var file = Path.Combine(_environment.WebRootPath, "Uploads", path);
+                if (System.IO.File.Exists(file))
+                {
+                    System.IO.File.Delete(file);
+                    user.UserProfile.AvatarUrl = null;
+                    await _unitOfWork.SaveChangesAsync();
+                    return NoContent();
+                }
             }
             return NotFound("User avatar was not found");
         }

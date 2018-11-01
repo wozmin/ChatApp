@@ -14,10 +14,10 @@
 .menu{
     display: none;
     border-bottom:3px solid #E7EBF0;
-    position: relative;
-    top:32px;
+    position: absolute;
+    top:50px;
     left:0;
-    width: 100%;
+    width: 30.9%;
 }
 
 .menu li{
@@ -104,6 +104,10 @@
     } 
     
     .navigation{
+        width: 100%;
+    }
+
+    .menu{
         width: 100%;
     }
 

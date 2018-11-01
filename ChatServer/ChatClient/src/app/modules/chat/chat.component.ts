@@ -61,8 +61,6 @@ export class ChatComponent implements OnInit{
             this.chatUsers.push(user);
             this.notifierService.notify('success','User was added successfully');
         })
-      //  this.hubService.connect();
-        
     }
 
     openChat(chatInfo:any){
@@ -95,6 +93,7 @@ export class ChatComponent implements OnInit{
             windowClass:'animated fadeInDown user-list-modal'
         });   
         const modal = modalRef.componentInstance as UserListModal;
+        modal.isAddBtnVisible = true;
         modalRef.componentInstance.addUserToChat.subscribe(($event)=>{
             this.hubService.joinChat($event,this.chatId);
         });

@@ -57,10 +57,9 @@ export class EditUserProfileComponent{
                 this.userProfile.userName,
                 this.userProfile.age,
                 this.userProfile.address
-            ));
-            setTimeout(()=>{
+            )).then(res=>{
                 this.router.navigateByUrl(`/user/${this.userId}/profile`);
-            },300)
+            })
         }
     }
 

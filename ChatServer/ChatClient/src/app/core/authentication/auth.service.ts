@@ -41,6 +41,8 @@ export class AuthService {
 
   logout(){
       localStorage.removeItem(TOKEN_NAME);
+      localStorage.removeItem('userName');
+      localStorage.removeItem('userId');
   }
 
   getTokenExpirationDate(token: string): Date {

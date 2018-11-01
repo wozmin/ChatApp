@@ -46,7 +46,7 @@ export class SignInFormGroup extends FormGroup{
                 Validators.required,
                 Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,}$")
             ])),
-            age:new SignInFormControl("Age","age","text","",Validators.compose([
+            age:new SignInFormControl("Age","age","number","",Validators.compose([
                 Validators.required,
                 Validators.pattern("^[1-9][0-9]?$")
             ])),

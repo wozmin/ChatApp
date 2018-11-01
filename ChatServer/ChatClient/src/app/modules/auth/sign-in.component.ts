@@ -30,16 +30,12 @@ export class SignInComponent{
                 password:this.password
             }).then(res=>{
                 this.hubService.connect();
+                this.router.navigateByUrl("/");
+                this.notifierService.notify('success','You have been authenticated successfully');
+                this.formSubmitted = false;
+                form.reset();
             }).catch(
                 error=>this.error = error.text());
-            setTimeout(()=>{   
-                if(!this.authService.isTokenExpired()){
-                    this.notifierService.notify('success','You have been authenticated successfully');
-                    this.router.navigateByUrl("/");
-                    this.formSubmitted = false;
-                    form.reset();
-                }
-            },500);
         }
         
     }
