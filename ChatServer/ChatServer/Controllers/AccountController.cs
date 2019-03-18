@@ -42,7 +42,7 @@ namespace ChatServer.Controllers
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<object> Login([FromBody] LoginViewModel model)
+        public async Task<IActionResult> Login([FromBody] LoginViewModel model)
         {
             var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, false);
 
@@ -60,7 +60,7 @@ namespace ChatServer.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<object> Register([FromBody] RegisterViewModel model)
+        public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
         {
             if (!ModelState.IsValid)
             {

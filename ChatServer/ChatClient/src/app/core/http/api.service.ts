@@ -17,7 +17,7 @@ export class APIService{
 
 
     constructor(private http:HttpClient){
-        this.baseUrl = "http://localhost:53809/api";
+        this.baseUrl = "http://localhost:52094/api";
     }
 
    

@@ -20,7 +20,7 @@ export class HubService {
     connect(){
         if(!this.hubConnection){
             this.hubConnection = new HubConnectionBuilder()
-            .withUrl("http://localhost:53809/chat",{ accessTokenFactory: () =>this.authService.getToken() })
+            .withUrl("http://localhost:52094/chat",{ accessTokenFactory: () =>this.authService.getToken() })
             .build();
         }
 

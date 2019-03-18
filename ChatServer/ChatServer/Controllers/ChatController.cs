@@ -57,7 +57,7 @@ namespace ChatServer.Controllers
         public async Task<IActionResult> CreateChat(string chatName)
         {
             var creator = await _unitOfWork.Users.GetUserByNameAsync(User.Identity.Name);
-            var admin = await _unitOfWork.Users.GetUserByNameAsync("Admin");
+            var admin = await _unitOfWork.Users.GetUserByNameAsync("admin");
             var currentUser = await _unitOfWork.Users.GetUserByNameAsync(User.Identity.Name);
             var chat = new Chat()
             {

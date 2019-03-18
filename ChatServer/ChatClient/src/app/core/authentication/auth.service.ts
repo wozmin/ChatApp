@@ -7,7 +7,7 @@ export const TOKEN_NAME: string = 'access-token';
 @Injectable()
 export class AuthService {
 
-  private url: string = 'http://localhost:53809/api/account';
+  private url: string = 'http://localhost:52094/api/account';
   private headers = new Headers({ 'Content-Type': 'application/json' });
 
   private userId:string;
