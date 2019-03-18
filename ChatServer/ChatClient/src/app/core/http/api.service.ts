@@ -2,7 +2,7 @@ import { EditUserModel } from './../../shared/models/editUser.model';
 import { catchError } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from "@angular/core";
-import { Observable, throwError, of } from "rxjs";
+import { Observable, throwError, of, Subject } from "rxjs";
 import { ChatDialog } from 'src/app/shared/models/chatDialog.model';
 import { ChatMessage } from 'src/app/shared/models/chat-message.model';
 import { ChatUser } from 'src/app/shared/models/ChatUser.model';
@@ -14,13 +14,13 @@ export class APIService{
     auth_token:string;
     userName:string;
     userId:string;
-
+    onAvatarChange:Subject<string> = new Subject<string>();
 
     constructor(private http:HttpClient){
         this.baseUrl = "http://localhost:52094/api";
     }
 
-   
+
     getChats(userId:string):Observable<ChatDialog[]>{
         return this.http.get(this.baseUrl+`/chat/${userId}`) as Observable<ChatDialog[]>;
     }
@@ -45,11 +45,11 @@ export class APIService{
         return this.http.get(this.baseUrl+`/chat/${chatId}/member`) as Observable<ChatUser[]>;
     }
 
-    uploadAvatar(avatar:File,onAvatarUpdated:any){
+    uploadAvatar(avatar:File){
         let avatarUrl:string;
         let fileReader:FileReader = new FileReader();
         fileReader.onload = (event)=>{
-            let base64img = fileReader.result.slice(23) as string;
+            let base64img = fileReader.result.slice(22) as string;
             let extention = avatar.type.slice(6);
             if(extention ==="jpeg"){
                 extention = "jpg";
@@ -58,7 +58,7 @@ export class APIService{
                 base64Avatar:base64img,
                 extention:extention
             }).subscribe((url:string)=>{
-                onAvatarUpdated(url);
+                this.onAvatarChange.next(url);
             })
         }
         fileReader.readAsDataURL(avatar);
