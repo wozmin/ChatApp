@@ -11,7 +11,7 @@ namespace ChatServer.Models
         public string ConnectionId { get; set; }
         public DateTime LastVisit { get; set; }
 
-        public virtual List<UserChat> UserChats { get; set; }
-        public virtual List<ChatMessage> ChatMessages { get; set; }
+        public List<UserChat> UserChats { get; set; }
+        public List<ChatMessage> ChatMessages { get; set; }
     }
 }
