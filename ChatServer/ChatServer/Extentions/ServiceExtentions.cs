@@ -26,6 +26,7 @@ namespace ChatServer.Extentions
             {
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),opt=> {
                     opt.UseRowNumberForPaging();
+                    opt.MigrationsAssembly(typeof(ApplicationContext).Assembly.FullName);
                 });
             });
         }

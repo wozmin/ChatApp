@@ -13,7 +13,7 @@ namespace ChatServer.Models
         public DateTime LastVisit { get; set; }
         public string AvatarUrl { get; set; }
 
-        public virtual ApplicationUser User { get; set; }
+        public ApplicationUser User { get; set; }
         public string ApplicationUserId { get; set; }
     }
 }
