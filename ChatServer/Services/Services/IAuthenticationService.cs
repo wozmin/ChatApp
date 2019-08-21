@@ -1,4 +1,5 @@
-﻿using Services.Models;
+﻿using Services.Dto;
+using Services.Models;
 using System.Threading.Tasks;
 
 namespace Services.Services
@@ -12,5 +13,12 @@ namespace Services.Services
         /// <param name="password">User password</param>
         /// <returns>Access token</returns>
         Task<AccessToken> AuthenticateAsync(string userName, string password);
+
+        /// <summary>
+        /// Registers new user in the system
+        /// </summary>
+        /// <param name="model">Model <see cref="RegisterDto"/></param>
+        /// <returns>Access token <see cref="AccessToken"/></returns>
+        Task<AccessToken> RegisterAsync(RegisterDto model);
     }
 }
