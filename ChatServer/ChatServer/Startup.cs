@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO.Compression;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.IO.Compression;
 using AutoMapper;
-using ChatServer.EF;
 using ChatServer.Extentions;
 using ChatServer.Hubs;
+using ChatServer.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace ChatServer
 {
@@ -74,6 +67,7 @@ namespace ChatServer
             app.UseSignalR(routes => {
                 routes.MapHub<ChatHub>("/chat");
             });
+            app.UseMiddleware<ApiExceptionMiddleware>();
             app.UseMvc();
         }
     }

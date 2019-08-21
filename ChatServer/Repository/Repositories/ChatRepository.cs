@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ChatServer.Repositories
 {
-    public class ChatRepository:RepositoryBase<Chat>,IChatRepository
+    public class ChatRepository : RepositoryBase<Chat>, IChatRepository
     {
         private ApplicationContext _db;
 
@@ -17,14 +17,14 @@ namespace ChatServer.Repositories
             _db = db;
         }
 
-        public override async Task<Chat> GetByIdAsync(int id)
+        public override async Task<Chat> GetByIdAsync(Guid id)
         {
             return await _db.Chats
                 .Include(c => c.UserChats)
-                .Include(c=>c.Messages)
-                .ThenInclude(m=>m.User)
-                .ThenInclude(m=>m.UserProfile)
-                .FirstOrDefaultAsync(c=>c.Id == id);
+                .Include(c => c.Messages)
+                .ThenInclude(m => m.User)
+                .ThenInclude(m => m.UserProfile)
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task<IEnumerable<UserChat>> GetChatsByUser(string userId)
@@ -36,10 +36,10 @@ namespace ChatServer.Repositories
                 .ThenInclude(u => u.UserProfile)
                 .Where(uc => uc.ApplicationUserId == userId)
                 .ToListAsync();
-                
+
         }
 
-        public  async Task<Chat> GetByNameAsync(string name)
+        public async Task<Chat> GetByNameAsync(string name)
         {
             return await _db.Chats
                 .Include(c => c.UserChats)
@@ -49,51 +49,47 @@ namespace ChatServer.Repositories
                 .FirstOrDefaultAsync(c => c.Name == name);
         }
 
-        public async override  Task<IEnumerable<Chat>> GetAllAsync()
+        public async override Task<IEnumerable<Chat>> GetAllAsync()
         {
             return await _db.Chats
-                .Include(c=>c.Messages)
-                .ThenInclude(m=>m.User)
-                .ThenInclude(u=>u.UserProfile)
+                .Include(c => c.Messages)
+                .ThenInclude(m => m.User)
+                .ThenInclude(u => u.UserProfile)
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<ChatMessage>> GetChatMessagesAsync(int chatId,int page,int pageSize)
+        public async Task<IEnumerable<ChatMessage>> GetChatMessagesAsync(Guid chatId, int page, int pageSize)
         {
             return await _db.ChatMessages
-                .Include(cm=>cm.User)
-                .ThenInclude(u=>u.UserProfile)
+                .Include(cm => cm.User)
+                .ThenInclude(u => u.UserProfile)
                 .OrderByDescending(m => m.Id)
                 .Where(c => c.Chat.Id == chatId)
-                .Skip((page -1)*pageSize)
+                .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
         }
 
-        public void SaveMessages(int chatId,ChatMessage chatMessage)
+        public void SaveMessages(Guid chatId, ChatMessage chatMessage)
         {
             var chat = _db.Chats.FirstOrDefault(c => c.Id == chatId);
-            if(chat == null)
-            {
-                return;
-            }
-            chat.Messages.Add(chatMessage);
+            chat?.Messages.Add(chatMessage);
         }
 
-        public bool IsUserInChat(string userId,int chatId)
+        public bool IsUserInChat(string userId, Guid chatId)
         {
-            return _db.UserChats.Any(u=>u.ApplicationUserId == userId && u.ChatId == chatId);
+            return _db.UserChats.Any(u => u.ApplicationUserId == userId && u.ChatId == chatId);
         }
 
-        public async Task<IEnumerable<ApplicationUser>> GetChatUsersAsync(int chatId)
+        public async Task<IEnumerable<ApplicationUser>> GetChatUsersAsync(Guid chatId)
         {
-           return await _db.UserChats
-                .Where(uc => uc.ChatId == chatId)
-                .Select(uc => uc.ApplicationUser)
-                .ToListAsync();
+            return await _db.UserChats
+                 .Where(uc => uc.ChatId == chatId)
+                 .Select(uc => uc.ApplicationUser)
+                 .ToListAsync();
         }
 
-        public void AddToChat(int chatId, string userId)
+        public void AddToChat(Guid chatId, string userId)
         {
             _db.UserChats.Add(new UserChat
             {

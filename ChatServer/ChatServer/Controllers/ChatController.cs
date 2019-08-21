@@ -32,7 +32,7 @@ namespace ChatServer.Controllers
         }
 
         [HttpGet("{id}/message")]
-        public async Task<IActionResult> GetChatMessages(int id,int page=1)
+        public async Task<IActionResult> GetChatMessages(Guid id,int page=1)
         {
             int pageSize = 20;
             if(await _unitOfWork.Chats.GetByIdAsync(id) == null)
@@ -43,7 +43,7 @@ namespace ChatServer.Controllers
         }
 
         [HttpGet("{id}/member")]
-        public async Task<IActionResult> GetChatMembers(int id)
+        public async Task<IActionResult> GetChatMembers(Guid id)
         {
             var chat = await _unitOfWork.Chats.GetByIdAsync(id);
             if(chat == null)

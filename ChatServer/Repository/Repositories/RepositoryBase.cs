@@ -2,12 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ChatServer.Repositories
 {
-    public abstract class RepositoryBase<T>:IRepositoryBase<T> where T:class
+    public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {
         private ApplicationContext _db { get; set; }
 
@@ -16,14 +15,14 @@ namespace ChatServer.Repositories
             _db = db;
         }
 
-        public  async  virtual Task<IEnumerable<T>> GetAllAsync()
+        public async virtual Task<IEnumerable<T>> GetAllAsync()
         {
             return await _db.Set<T>().ToListAsync();
         }
 
-        public async virtual  Task<T> GetByIdAsync(int id)
+        public async virtual Task<T> GetByIdAsync(Guid id)
         {
-           return await _db.Set<T>().FindAsync(id);
+            return await _db.Set<T>().FindAsync(id);
         }
 
         public void Create(T entity)
@@ -39,7 +38,7 @@ namespace ChatServer.Repositories
         public void Delete(int id)
         {
             T entity = _db.Set<T>().Find(id);
-            if(entity != null)
+            if (entity != null)
             {
                 _db.Set<T>().Remove(entity);
             }

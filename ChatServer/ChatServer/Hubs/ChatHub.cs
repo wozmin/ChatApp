@@ -36,7 +36,7 @@ namespace ChatServer.Hubs
         }
 
 
-        public async Task JoinChat(string userId,int chatId)
+        public async Task JoinChat(string userId,Guid chatId)
         {
             var user = await _unitOfWork.Users.GetByIdAsync(userId);
             await Groups.AddToGroupAsync(user.ConnectionId, chatId.ToString());

@@ -1,9 +1,4 @@
 ﻿using ChatServer.EF;
-using ChatServer.Models;
-using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ChatServer.Repositories
@@ -13,30 +8,30 @@ namespace ChatServer.Repositories
         private IUserRepository _userRepo;
         private IChatRepository _chatRepo;
         private ApplicationContext _db { get; set; }
-        private UserManager<ApplicationUser> _userManager;
 
 
-        public UnitOfWork(ApplicationContext db,UserManager<ApplicationUser> userManager)
+        public UnitOfWork(ApplicationContext db)
         {
             _db = db;
-            _userManager = userManager;
         }
 
-        public IUserRepository Users {
+        public IUserRepository Users
+        {
             get
             {
-                if(_userRepo == null)
+                if (_userRepo == null)
                 {
-                    _userRepo = new UserRepository(_db,_userManager);
+                    _userRepo = new UserRepository(_db);
                 }
                 return _userRepo;
             }
         }
 
-        public IChatRepository Chats {
+        public IChatRepository Chats
+        {
             get
             {
-                if(_chatRepo == null)
+                if (_chatRepo == null)
                 {
                     _chatRepo = new ChatRepository(_db);
                 }
@@ -44,7 +39,7 @@ namespace ChatServer.Repositories
             }
         }
 
-        public async  Task SaveChangesAsync()
+        public async Task SaveChangesAsync()
         {
             await _db.SaveChangesAsync();
         }

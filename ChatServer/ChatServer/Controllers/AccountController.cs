@@ -1,61 +1,55 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ChatServer.Models;
 using ChatServer.Repositories;
 using ChatServer.Services;
 using ChatServer.ViewModel;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
+using Services.Models;
+using Services.Services;
 
 namespace ChatServer.Controllers
 {
+    /// <summary>
+    /// Account controller
+    /// </summary>
     [Produces("application/json")]
     [Route("api/account")]
     public class AccountController : Controller
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IConfiguration _configuration;
         private readonly IAccountService _accountService;
+        private readonly IAuthenticationService _authenticationService;
         private readonly IUnitOfWork _unitOfWork;
         
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IConfiguration configuration,
             IAccountService accountService,
+            IAuthenticationService authenticationService,
             IUnitOfWork unitOfWork
         )
         {
             
             _userManager = userManager;
             _signInManager = signInManager;
-            _configuration = configuration;
             _accountService = accountService;
             _unitOfWork = unitOfWork;
+            _authenticationService = authenticationService;
         }
 
+        /// <summary>
+        /// Authenticate user based on the provied credentials
+        /// </summary>
+        /// <param name="model">Login model <see cref="LoginViewModel"/></param>
+        /// <returns>Access token <see cref="AccessToken"/></returns>
         [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginViewModel model)
         {
-            var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, false);
-
-            if (result.Succeeded)
-            {
-                ApplicationUser user = _userManager.Users.SingleOrDefault(r => r.UserName == model.UserName);
-                user.IsOnline = true;
-                await _unitOfWork.SaveChangesAsync();
-                var token = _accountService.GenerateJwtToken(model.UserName, user);
-                return Ok(new AccessToken { Token = token, UserName = user.UserName, UserId = user.Id });
-            }
-
-            return NotFound("Wrong user name or password");
+            return Ok(await _authenticationService.AuthenticateAsync(model.UserName, model.Password));
         }
 
         [AllowAnonymous]
