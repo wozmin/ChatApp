@@ -20,14 +20,22 @@ namespace Services
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IJwtTokenFactory _jwtTokenFactory;
-        
+
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="signInManager">Identity singIn manager</param>
+        /// <param name="userManager">Identity user manager</param>
         /// <param name="unitOfWork">Unit of work</param>
         /// <param name="jwtTokenFactory">Jwt token factory</param>
-        public AuthenticationService(IUnitOfWork unitOfWork, IJwtTokenFactory jwtTokenFactory)
+        public AuthenticationService(
+            SignInManager<ApplicationUser> signInManager,
+            UserManager<ApplicationUser> userManager,
+            IUnitOfWork unitOfWork,
+            IJwtTokenFactory jwtTokenFactory)
         {
+            _signInManager = signInManager;
+            _userManager = userManager;
             _unitOfWork = unitOfWork;
             _jwtTokenFactory = jwtTokenFactory;
         }
