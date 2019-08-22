@@ -2,7 +2,6 @@
 using ChatServer.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Moq;
-using NUnit.Framework;
 using Services;
 using Services.Exceptions;
 using Services.Factory;
@@ -10,10 +9,10 @@ using ServicesTests.Fakes;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Xunit;
 
 namespace ServicesTests
 {
-    [TestFixture]
     public class AuthenticationServiceTest
     {
         private string UserName { get; set; }
@@ -24,8 +23,7 @@ namespace ServicesTests
         private ApplicationUser User;
         private List<ApplicationUser> Users;
 
-        [SetUp]
-        public void Setup()
+        public AuthenticationServiceTest()
         {
             UserName = "User Name";
             Password = "Password";
@@ -33,10 +31,11 @@ namespace ServicesTests
             Token = "token";
             User = new ApplicationUser { UserName = UserName, Id = UserId };
             Users = new List<ApplicationUser> { User };
-        }
 
-        [Test]
-        public async Task Authenticate_Returns_Token()
+        }
+        
+        [Fact]
+        public async Task AuthenticateReturnsToken()
         {
             var singInManagerMock = new Mock<FakeSignInManager>();
             var userManagerMock = new Mock<FakeUserManager>();
@@ -50,13 +49,13 @@ namespace ServicesTests
             var authenticationService = new AuthenticationService(singInManagerMock.Object, userManagerMock.Object, unitOfWorkMock.Object, jwtTokenFactoryMock.Object);
             var accessToken = await authenticationService.AuthenticateAsync(UserName, Password);
 
-            Assert.AreEqual(accessToken.UserId, UserId);
-            Assert.AreEqual(accessToken.UserName, UserName);
-            Assert.AreEqual(accessToken.Token, Token);
+            Assert.Equal(accessToken.UserId, UserId);
+            Assert.Equal(accessToken.UserName, UserName);
+            Assert.Equal(accessToken.Token, Token);
         }
 
-        [Test]
-        public void Authenticate_Throws_Validation_Exception()
+        [Fact]
+        public void AuthenticateThrowsValidationException()
         { 
             var singInManagerMock = new Mock<FakeSignInManager>();
             var userManagerMock = new Mock<FakeUserManager>();

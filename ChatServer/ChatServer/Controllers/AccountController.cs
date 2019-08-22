@@ -37,7 +37,7 @@ namespace ChatServer.Controllers
         [AllowAnonymous]
         [ValidationFilter]
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginViewModel model)
+        public async Task<IActionResult> LoginAsync([FromBody] LoginViewModel model)
         {
             return Ok(await _authenticationService.AuthenticateAsync(model.UserName, model.Password));
         }
@@ -45,7 +45,7 @@ namespace ChatServer.Controllers
         [AllowAnonymous]
         [ValidationFilter]
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
+        public async Task<IActionResult> RegisterAsync([FromBody] RegisterViewModel model)
         {
             var registerDto = _mapper.Map<RegisterDto>(model);
             return Ok(await _authenticationService.RegisterAsync(registerDto));
