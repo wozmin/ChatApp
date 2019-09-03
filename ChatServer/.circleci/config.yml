@@ -1,0 +1,28 @@
+﻿workflows:
+  version: 2
+  main:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: master
+
+
+version: 2
+jobs:
+  build:
+    machine: true
+    steps:
+      - checkout
+
+      # build image
+      - run: |
+          docker info
+          docker build -t pub-chat-app -f Dockerfile .
+      # deploy the image
+      - run: |
+          docker login --username=$HEROKU_USERNAME --password=$HEROKU_API_KEY registry.heroku.com
+          docker tag pub-chat-app  registry.heroku.com/$HEROKU_APP_NAME/web
+          docker push registry.heroku.com/$HEROKU_APP_NAME/web                
+          curl https://cli-assets.heroku.com/install.sh | sh
+          heroku container:release web -a $HEROKU_APP_NAME
