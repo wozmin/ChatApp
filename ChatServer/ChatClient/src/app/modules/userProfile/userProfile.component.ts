@@ -50,7 +50,7 @@ export class UserProfileComponent{
     }
 
     changeAvatar(avatar:File){
-        this.apiService.uploadAvatar(avatar,this.updateProfileAvatar);
+        this.apiService.uploadAvatar(avatar);
         console.log(this.userProfile.avatarUrl);
         this.notifierService.notify("success","Avatar was updated successfully");
     }

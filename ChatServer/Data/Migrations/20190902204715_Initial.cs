@@ -1,9 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using System;
-using System.Collections.Generic;
 
-namespace ChatServer.Migrations
+namespace Data.Migrations
 {
     public partial class Initial : Migration
     {
@@ -14,9 +13,9 @@ namespace ChatServer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
                     Name = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(maxLength: 256, nullable: true)
+                    NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -24,20 +23,31 @@ namespace ChatServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserProfiles",
+                name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Address = table.Column<string>(nullable: true),
-                    Age = table.Column<int>(nullable: false),
-                    ApplicationUserId = table.Column<int>(nullable: false),
-                    Avatar = table.Column<string>(nullable: true),
-                    LastVisit = table.Column<DateTime>(nullable: false)
+                    Id = table.Column<string>(nullable: false),
+                    UserName = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
+                    Email = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(nullable: false),
+                    PasswordHash = table.Column<string>(nullable: true),
+                    SecurityStamp = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
+                    LockoutEnabled = table.Column<bool>(nullable: false),
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    IsOnline = table.Column<bool>(nullable: false),
+                    ConnectionId = table.Column<string>(nullable: true),
+                    LastVisit = table.Column<DateTime>(nullable: false, defaultValueSql: "getdate()")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserProfiles", x => x.Id);
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -46,9 +56,9 @@ namespace ChatServer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    RoleId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
-                    ClaimValue = table.Column<string>(nullable: true),
-                    RoleId = table.Column<string>(nullable: false)
+                    ClaimValue = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -62,48 +72,14 @@ namespace ChatServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUsers",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    ConnectionId = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(nullable: false),
-                    LockoutEnabled = table.Column<bool>(nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
-                    Online = table.Column<bool>(nullable: false),
-                    PasswordHash = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    SecurityStamp = table.Column<string>(nullable: true),
-                    TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    UserName = table.Column<string>(maxLength: 256, nullable: true),
-                    UserProfileId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AspNetUsers_UserProfiles_UserProfileId",
-                        column: x => x.UserProfileId,
-                        principalTable: "UserProfiles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
-                    ClaimValue = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: false)
+                    ClaimValue = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -181,21 +157,42 @@ namespace ChatServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Chats",
+                name: "Chat",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
                     CreationDate = table.Column<DateTime>(nullable: false),
-                    CreatorId = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true)
+                    CreatorId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Chats", x => x.Id);
+                    table.PrimaryKey("PK_Chat", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Chats_AspNetUsers_CreatorId",
+                        name: "FK_Chat_AspNetUsers_CreatorId",
                         column: x => x.CreatorId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserProfiles",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Age = table.Column<int>(nullable: false),
+                    Address = table.Column<string>(nullable: true),
+                    LastVisit = table.Column<DateTime>(nullable: false),
+                    AvatarUrl = table.Column<string>(nullable: true),
+                    ApplicationUserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserProfiles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserProfiles_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -205,20 +202,25 @@ namespace ChatServer.Migrations
                 name: "ChatMessages",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ChatId = table.Column<int>(nullable: true),
-                    Date = table.Column<DateTime>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
                     Message = table.Column<string>(nullable: true),
-                    User = table.Column<string>(nullable: true)
+                    Date = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
+                    ChatId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ChatMessages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ChatMessages_Chats_ChatId",
+                        name: "FK_ChatMessages_Chat_ChatId",
                         column: x => x.ChatId,
-                        principalTable: "Chats",
+                        principalTable: "Chat",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ChatMessages_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -227,22 +229,24 @@ namespace ChatServer.Migrations
                 name: "UserChats",
                 columns: table => new
                 {
-                    ChatId = table.Column<int>(nullable: false),
-                    ApplicationUserId = table.Column<string>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ApplicationUserId = table.Column<string>(nullable: true),
+                    ChatId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserChats", x => new { x.ChatId, x.ApplicationUserId });
+                    table.PrimaryKey("PK_UserChats", x => x.Id);
                     table.ForeignKey(
                         name: "FK_UserChats_AspNetUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_UserChats_Chats_ChatId",
+                        name: "FK_UserChats_Chat_ChatId",
                         column: x => x.ChatId,
-                        principalTable: "Chats",
+                        principalTable: "Chat",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -287,11 +291,9 @@ namespace ChatServer.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_UserProfileId",
-                table: "AspNetUsers",
-                column: "UserProfileId",
-                unique: true,
-                filter: "[UserProfileId] IS NOT NULL");
+                name: "IX_Chat_CreatorId",
+                table: "Chat",
+                column: "CreatorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ChatMessages_ChatId",
@@ -299,14 +301,26 @@ namespace ChatServer.Migrations
                 column: "ChatId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Chats_CreatorId",
-                table: "Chats",
-                column: "CreatorId");
+                name: "IX_ChatMessages_UserId",
+                table: "ChatMessages",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserChats_ApplicationUserId",
                 table: "UserChats",
                 column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserChats_ChatId",
+                table: "UserChats",
+                column: "ChatId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserProfiles_ApplicationUserId",
+                table: "UserProfiles",
+                column: "ApplicationUserId",
+                unique: true,
+                filter: "[ApplicationUserId] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -333,16 +347,16 @@ namespace ChatServer.Migrations
                 name: "UserChats");
 
             migrationBuilder.DropTable(
+                name: "UserProfiles");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Chats");
+                name: "Chat");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "UserProfiles");
         }
     }
 }

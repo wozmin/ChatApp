@@ -77,7 +77,7 @@ namespace Services
 
             var result = await _userManager.CreateAsync(user, model.Password);
 
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
                 var errorMsg = result.Errors
                     .Select(error => error.Description)

@@ -3,12 +3,16 @@ using ChatServer.Models;
 using ChatServer.Repositories;
 using ChatServer.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
+using Services;
+using Services.Factory;
+using Services.Services;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -20,11 +24,13 @@ namespace ChatServer.Extentions
 {
     public static class ServiceExtentions
     {
-        public static void ConfigureSqlServer(this IServiceCollection services, IConfiguration configuration)
+        public static void ConfigureSqlServer(this IServiceCollection services, IConfiguration configuration, IHostingEnvironment environment)
         {
+            var envConnection = environment.IsDevelopment() ? "DevConnection":"ProdConnection";
             services.AddDbContext<ApplicationContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),opt=> {
+                options.UseSqlServer(configuration.GetConnectionString(envConnection), opt =>
+                {
                     opt.UseRowNumberForPaging();
                     opt.MigrationsAssembly(typeof(ApplicationContext).Assembly.FullName);
                 });
@@ -84,12 +90,14 @@ namespace ChatServer.Extentions
 
         public static void ConfigureServices(this IServiceCollection services)
         {
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IChatRepository, ChatRepository>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IAccountService, AccountService>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IChatRepository, ChatRepository>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IAccountService, AccountService>();
+            services.AddTransient<IAuthenticationService, AuthenticationService>();
+            services.AddTransient<IJwtTokenFactory, JwtTokenFactory>();
         }
 
-        
+
     }
 }
