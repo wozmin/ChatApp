@@ -16,6 +16,7 @@ services:
         
   web:
     build: ChatClient/    
+    image: pub-chat-app:tag
     restart: always
     container_name: web
     ports:
