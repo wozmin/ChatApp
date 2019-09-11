@@ -17,6 +17,7 @@ services:
   web:
     build: ChatClient/    
     restart: always
+    container_name: web
     ports:
       - "3000:3000"
     depends_on:
