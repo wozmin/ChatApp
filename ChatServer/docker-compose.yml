@@ -16,7 +16,7 @@ services:
         
   web:
     build: ChatClient/    
-    image: pub-chat-app:tag
+    image: registry.heroku.com/pub-chat-app/web
     restart: always
     container_name: web
     ports:
