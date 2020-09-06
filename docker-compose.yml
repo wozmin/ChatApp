@@ -6,7 +6,7 @@ networks:
     
 services:
   api:
-    build: .
+    build: ChatServer/
     restart: always
     ports:
       - "5000:80"
@@ -15,28 +15,23 @@ services:
       - redis
         
   web:
-    build: ChatClient/    
-    image: registry.heroku.com/pub-chat-app/web
+    build: FrontEnd/    
     restart: always
-    container_name: web
     ports:
       - "3000:3000"
     depends_on:
       - api
 
   db:
-    image: microsoft/mssql-server-linux:2017-latest
-    container_name: db
+    image: mcr.microsoft.com/mssql/server
     restart: always
     environment:
       - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=Andrew123456
-      - MSSQL_TCP_PORT=1433
+      - SA_PASSWORD=Andrew123456
     ports:
-      - "1400:1433"
+      - "1433:1433"
   
   redis:
     image: redis
-    container_name: redis
     ports:
       - "6379:6379"

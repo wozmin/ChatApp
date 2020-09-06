@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29009.5
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatServer", "ChatServer\ChatServer.csproj", "{C7346E43-82AF-45B9-9461-F828A459ED54}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{C7346E43-82AF-45B9-9461-F828A459ED54}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{DC1D899A-2125-41D1-9316-6D292C69F2B7}"
 EndProject
@@ -11,13 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Servic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Repository\Repository.csproj", "{0C2587CD-23C7-4F1B-BAF3-526D8B2E5A3B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServicesTests", "ServicesTests\ServicesTests.csproj", "{453CEFAC-EC0B-4DCB-9EEA-F089577A9B7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServicesTests", "Tests\ServicesTests\ServicesTests.csproj", "{453CEFAC-EC0B-4DCB-9EEA-F089577A9B7E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{34289026-4D24-41CF-9A66-5DA471B9D79C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControllersTests", "Tests\ControllersTests\ControllersTests.csproj", "{A93CD719-6748-47E7-97E1-D4957334A498}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{231ED762-C544-447B-9573-41C4D47DDD28}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControllersTests", "ControllersTests\ControllersTests.csproj", "{A93CD719-6748-47E7-97E1-D4957334A498}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8FC8DC96-8E82-452A-95ED-B670A16343B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,9 +52,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{453CEFAC-EC0B-4DCB-9EEA-F089577A9B7E} = {231ED762-C544-447B-9573-41C4D47DDD28}
-		{231ED762-C544-447B-9573-41C4D47DDD28} = {34289026-4D24-41CF-9A66-5DA471B9D79C}
-		{A93CD719-6748-47E7-97E1-D4957334A498} = {231ED762-C544-447B-9573-41C4D47DDD28}
+		{453CEFAC-EC0B-4DCB-9EEA-F089577A9B7E} = {8FC8DC96-8E82-452A-95ED-B670A16343B9}
+		{A93CD719-6748-47E7-97E1-D4957334A498} = {8FC8DC96-8E82-452A-95ED-B670A16343B9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {40C7E4F8-E81E-4DCB-8BB4-6435E50CE4E9}

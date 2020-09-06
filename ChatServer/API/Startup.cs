@@ -3,17 +3,23 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Reflection;
-using AutoMapper;
-using ChatServer.Extentions;
-using ChatServer.Hubs;
-using ChatServer.Middleware;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
+using AutoMapper;
+
+using ChatServer.EF;
+using ChatServer.Extentions;
+using ChatServer.Hubs;
+using ChatServer.Middleware;
+
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace ChatServer
@@ -27,7 +33,7 @@ namespace ChatServer
         }
 
         public IConfiguration Configuration { get; }
-        public IHostingEnvironment Environment {get;}
+        public IHostingEnvironment Environment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -37,9 +43,9 @@ namespace ChatServer
                 options.AddPolicy("AllowAll", builder =>
                 {
                     builder.AllowAnyOrigin()
-                           .AllowAnyMethod()
-                           .AllowAnyHeader()
-                           .AllowCredentials();
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
                 });
             });
             services.AddResponseCompression();
@@ -52,18 +58,17 @@ namespace ChatServer
                 c.AddSecurityDefinition("Bearer", new ApiKeyScheme
                 {
                     Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
-                    Name = "Authorization",
-                    In = "header",
-                    Type = "apiKey"
+                        Name = "Authorization",
+                        In = "header",
+                        Type = "apiKey"
                 });
                 c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>
-                    {
-                        { "Bearer", new string[] { } }
-                    });
+                { { "Bearer", new string[] {} }
+                });
                 c.SwaggerDoc("v1", new Info
                 {
                     Title = "Chat API",
-                    Version = "v1",
+                        Version = "v1",
                 });
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -92,6 +97,14 @@ namespace ChatServer
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            using(var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationContext>();
+                context.Database.EnsureDeleted();
+                context.Database.Migrate();
+            }
+
             app.UseCors("AllowAll");
             app.UseResponseCompression();
             app.UseAuthentication();

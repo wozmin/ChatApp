@@ -1,19 +1,26 @@
-FROM microsoft/dotnet:2.2-sdk as build
-
-ARG BUILDCONFIG=RELEASE
-ARG VERSION=1.0.0
-
-COPY . /build/
-
-RUN dotnet restore ./build
-
-COPY . ./build/
-WORKDIR /build/
-RUN dotnet publish ./ChatServer/ChatServer.csproj -c $BUILDCONFIG -o out 
-
-FROM microsoft/dotnet:2.2-aspnetcore-runtime
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2 AS base
 WORKDIR /app
+EXPOSE 80
 
-COPY --from=build /build/ChatServer/out .
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
+WORKDIR /src
 
-ENTRYPOINT ["dotnet", "ChatServer.dll", "--server.urls", "http://0.0.0.0:5000"] 
+COPY *.sln ./
+COPY ./*/*.csproj ./
+RUN for file in $(ls *.csproj); do mkdir -p ./${file%.*}/ && mv $file ./${file%.*}/; done
+
+COPY ./Tests/*/*.csproj ./
+RUN for file in $(ls *.csproj); do mkdir -p Tests/${file%.*}/ && mv $file Tests/${file%.*}/; done
+
+RUN dotnet restore
+
+COPY . .
+RUN dotnet build -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "API.dll"]

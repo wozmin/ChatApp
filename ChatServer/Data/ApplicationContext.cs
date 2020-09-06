@@ -1,11 +1,13 @@
-﻿using ChatServer.Models;
+﻿using System.Reflection;
+
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
+
+using ChatServer.Models;
 
 namespace ChatServer.EF
 {
-    public class ApplicationContext:IdentityDbContext<ApplicationUser>
+    public class ApplicationContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<ApplicationUser> AppUsers { get; set; }
@@ -13,7 +15,7 @@ namespace ChatServer.EF
         public DbSet<ChatMessage> ChatMessages { get; set; }
         public DbSet<UserChat> UserChats { get; set; }
 
-        public ApplicationContext(DbContextOptions<ApplicationContext> options):base(options)
+        public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
 
         }

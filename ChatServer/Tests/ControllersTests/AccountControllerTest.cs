@@ -1,13 +1,18 @@
-﻿using AutoMapper;
+﻿using System.Threading.Tasks;
+
+using Microsoft.AspNetCore.Mvc;
+
+using AutoMapper;
+
 using ChatServer.Controllers;
 using ChatServer.ViewModel;
-using Microsoft.AspNetCore.Mvc;
+
 using Moq;
+
 using Services.Dto;
-using Services.Exceptions;
 using Services.Models;
 using Services.Services;
-using System.Threading.Tasks;
+
 using Xunit;
 
 namespace ControllersTests
